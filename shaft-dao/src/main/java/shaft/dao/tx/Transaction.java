@@ -17,12 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.tx;
+package shaft.dao.tx;
 
 /**
  * 事务对象
  */
 public interface Transaction {
+    
+    public static final int DEFAULT_LEVEL = -1;
+    
     /**
      * 提交一个事务
      */

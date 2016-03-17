@@ -17,16 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.tx;
+package shaft.dao.tx;
 
 import java.sql.*;
-import jetbrick.dao.TransactionException;
+import shaft.dao.TransactionException;
 import jetbrick.util.RandomStringUtils;
 
 /**
  * Jdbc 子事务
  */
-public class JdbcNestedTransaction implements Transaction {
+public final class JdbcNestedTransaction implements Transaction {
     private final Connection conn;
     private Savepoint savepoint;
 
@@ -34,7 +34,7 @@ public class JdbcNestedTransaction implements Transaction {
         this.conn = conn;
 
         try {
-            savepoint = conn.setSavepoint(RandomStringUtils.randomAlphabetic(4));
+            savepoint = conn.setSavepoint();
         } catch (SQLException e) {
             throw new TransactionException(e);
         }

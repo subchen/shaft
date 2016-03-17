@@ -17,27 +17,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.tx;
+package shaft.dao.tx;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import jetbrick.dao.TransactionException;
-import jetbrick.dao.orm.util.DbUtils;
+import shaft.dao.TransactionException;
+import shaft.dao.util.DbUtils;
 
 /**
  * Jdbc 事务对象
  */
-public class JdbcTransaction implements Transaction {
+public final class JdbcTransaction implements Transaction {
     private final Connection conn;
+    private final int defaultLevel;
     private final ThreadLocal<JdbcTransaction> transationHandler;
 
-    public JdbcTransaction(Connection conn, ThreadLocal<JdbcTransaction> transationHandler) {
+    public JdbcTransaction(Connection conn, int level, ThreadLocal<JdbcTransaction> transationHandler) {
         this.conn = conn;
         this.transationHandler = transationHandler;
+        this.defaultLevel = conn.getTransactionIsolation();
 
         try {
             if (conn.getAutoCommit()) {
                 conn.setAutoCommit(false);
+            }
+            if (level != Transaction.DEFAULT_LEVEL) {
+                conn.setTransactionIsolation(level);
             }
         } catch (SQLException e) {
             throw new TransactionException(e);
@@ -89,6 +94,8 @@ public class JdbcTransaction implements Transaction {
             if (conn.isClosed()) {
                 throw new TransactionException("the connection is closed in transaction.");
             }
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(defaultLevel);
             DbUtils.closeQuietly(conn);
         } catch (SQLException e) {
             throw new TransactionException(e);

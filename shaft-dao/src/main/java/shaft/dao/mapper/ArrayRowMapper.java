@@ -17,11 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.mapper;
+package shaft.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import jetbrick.dao.orm.RowMapper;
+import shaft.dao.RowMapper;
 
 public class ArrayRowMapper implements RowMapper<Object[]> {
 

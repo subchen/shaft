@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.mapper;
+package shaft.dao.mapper;
 
 import java.sql.*;
 import jetbrick.bean.KlassInfo;
 import jetbrick.bean.PropertyInfo;
-import jetbrick.dao.orm.RowMapper;
+import shaft.dao.RowMapper;
 import jetbrick.typecast.TypeCastUtils;
 import jetbrick.util.IdentifiedNameUtils;
 

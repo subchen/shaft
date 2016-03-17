@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.handler;
+package shaft.dao.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import jetbrick.dao.orm.ResultSetHandler;
-import jetbrick.dao.orm.RowMapper;
+import shaft.dao.ResultSetHandler;
+import shaft.dao.RowMapper;
 
 public class SingleRowHandler<T> implements ResultSetHandler<T> {
 

@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.util;
+package shaft.dao.util;
 
 import java.sql.*;
 import java.util.regex.Pattern;
 import javax.sql.DataSource;
-import jetbrick.dao.dialect.SqlDialect;
+import shaft.dao.dialect.SqlDialect;
 import jetbrick.util.ExceptionUtils;
 
 public final class DbUtils {

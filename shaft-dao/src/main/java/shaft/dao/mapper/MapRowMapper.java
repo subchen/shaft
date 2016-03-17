@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm.mapper;
+package shaft.dao.mapper;
 
 import java.sql.*;
 import java.util.Map;
 import jetbrick.collection.CaseInsensitiveHashMap;
-import jetbrick.dao.orm.RowMapper;
+import shaft.dao.RowMapper;
 
 public class MapRowMapper implements RowMapper<Map<String, Object>> {
 

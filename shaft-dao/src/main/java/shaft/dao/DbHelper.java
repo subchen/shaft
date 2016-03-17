@@ -17,20 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.orm;
+package shaft.dao;
 
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 import javax.sql.DataSource;
-import jetbrick.dao.DbException;
-import jetbrick.dao.TransactionException;
-import jetbrick.dao.dialect.SqlDialect;
-import jetbrick.dao.orm.handler.*;
-import jetbrick.dao.orm.mapper.*;
-import jetbrick.dao.orm.tx.*;
-import jetbrick.dao.orm.util.DbUtils;
-import jetbrick.dao.orm.util.PreparedStatementCreator;
+import shaft.dao.DbException;
+import shaft.dao.TransactionException;
+import shaft.dao.handler.*;
+import shaft.dao.mapper.*;
+import shaft.dao.tx.*;
+import shaft.dao.util.DbUtils;
+import shaft.dao.util.PreparedStatementCreator;
 import jetbrick.util.Validate;
 
 /**
@@ -38,26 +37,41 @@ import jetbrick.util.Validate;
  */
 @SuppressWarnings("unchecked")
 public class DbHelper {
-    private static final boolean ALLOW_NESTED_TRANSACTION = System.getProperty("jetbrick.orm.transaction.nested.disabled") == null;
+    private static final boolean ALLOW_NESTED_TRANSACTION = System.getProperty("shaft.dao.transaction.nested.disabled") == null;
 
     // 当前线程(事务)
     private final ThreadLocal<JdbcTransaction> transationHandler = new ThreadLocal<JdbcTransaction>();
     private final DataSource dataSource;
-    private final SqlDialect dialect;
+    private Metadata metaData;
 
     public DbHelper(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.dialect = doGetDialet();
     }
 
     public DataSource getDataSource() {
         return dataSource;
+    }
+    
+    public Metadata getMetadata() {
+        if (metaData == null) {
+            metaData = new Metadata(this);
+        }
+        return metaData;
     }
 
     /**
      * 启动一个事务(默认支持子事务)
      */
     public Transaction transaction() {
+        transaction(Transaction.DEFAULT_LEVEL);
+    }
+    
+    /**
+     * 启动一个事务(默认支持子事务)
+     * 
+     * @param level 事务隔离级别
+     */
+    public Transaction transaction(int level) {
         if (transationHandler.get() != null) {
             if (ALLOW_NESTED_TRANSACTION) {
                 return new JdbcNestedTransaction(transationHandler.get().getConnection());
@@ -65,7 +79,7 @@ public class DbHelper {
             throw new TransactionException("Can't begin a nested transaction.");
         }
         try {
-            JdbcTransaction tx = new JdbcTransaction(dataSource.getConnection(), transationHandler);
+            JdbcTransaction tx = new JdbcTransaction(dataSource.getConnection(), level, transationHandler);
             transationHandler.set(tx);
             return tx;
         } catch (SQLException e) {
@@ -94,7 +108,7 @@ public class DbHelper {
      */
     private void closeConnection(Connection conn) {
         if (transationHandler.get() == null) {
-            // not in transaction
+            // not in transaction, close it
             DbUtils.closeQuietly(conn);
         }
     }
@@ -133,6 +147,10 @@ public class DbHelper {
         return queryAsObject(Long.class, sql, parameters);
     }
 
+    public Double queryAsDouble(String sql, Object... parameters) {
+        return queryAsObject(Double.class, sql, parameters);
+    }
+    
     public String queryAsString(String sql, Object... parameters) {
         return queryAsObject(String.class, sql, parameters);
     }
@@ -178,7 +196,7 @@ public class DbHelper {
 
         List<T> items = Collections.emptyList();
         if (pagelist.getTotalCount() > 0) {
-            String page_sql = dialect.sql_pagelist(sql, pagelist.getFirstResult(), pagelist.getPageSize());
+            String page_sql = DbUtils.sql_pagelist(sql, pagelist.getFirstResult(), pagelist.getPageSize());
             PagelistHandler<T> rsh = new PagelistHandler<T>(rowMapper);
             if (page_sql == null) {
                 // 如果不支持分页，那么使用原始的分页方法 ResultSet.absolute(first)
@@ -221,7 +239,7 @@ public class DbHelper {
         return result;
     }
 
-    public int execute(String sql, Object... parameters) {
+    public int executeUpdate(String sql, Object... parameters) {
         Validate.notNull(sql, "sql is null.");
 
         Connection conn = null;
@@ -281,6 +299,39 @@ public class DbHelper {
         }
     }
 
+    public int executeUpdate(String sql, PreparedStatementCallback callback) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                if (callback != null) {
+                    callback.setParameters(ps);
+                }
+                return ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DbException(e);
+        } finally {
+            closeConnection(conn);
+        }
+    }
+
+    public <T> T executeQuery(String sql, ResultSetCallback<T> callback) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    return callback.execute(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbException(e);
+        } finally {
+            closeConnection(conn);
+        }
+    }
+
     /**
      * 判断表是否已经存在
      */
@@ -300,24 +351,7 @@ public class DbHelper {
         }
     }
 
-    public SqlDialect getDialect() {
-        return dialect;
-    }
-
-    private SqlDialect doGetDialet() {
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-            String name = conn.getMetaData().getDatabaseProductName();
-            return SqlDialect.getDialect(name);
-        } catch (SQLException e) {
-            throw new DbException(e);
-        } finally {
-            DbUtils.closeQuietly(conn);
-        }
-    }
-
-    public <T> RowMapper<T> getRowMapper(Class<T> beanClass) {
+    private <T> RowMapper<T> getRowMapper(Class<T> beanClass) {
         RowMapper<T> rowMapper;
         if (beanClass.isArray()) {
             rowMapper = (RowMapper<T>) new ArrayRowMapper();
