@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -23,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import shaft.dao.RowMapper;
 
-public class ArrayRowMapper implements RowMapper<Object[]> {
+public final class ArrayRowMapper implements RowMapper<Object[]> {
 
     @Override
     public Object[] handle(ResultSet rs) throws SQLException {

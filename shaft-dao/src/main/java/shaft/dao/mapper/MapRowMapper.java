@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -24,7 +24,7 @@ import java.util.Map;
 import jetbrick.collection.CaseInsensitiveHashMap;
 import shaft.dao.RowMapper;
 
-public class MapRowMapper implements RowMapper<Map<String, Object>> {
+public final class MapRowMapper implements RowMapper<Map<String, Object>> {
 
     @Override
     public Map<String, Object> handle(ResultSet rs) throws SQLException {

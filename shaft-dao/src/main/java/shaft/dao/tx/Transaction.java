@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -23,9 +23,9 @@ package shaft.dao.tx;
  * 事务对象
  */
 public interface Transaction {
-    
+
     public static final int DEFAULT_ISOLATION_LEVEL = -1;
-    
+
     /**
      * 提交一个事务
      */

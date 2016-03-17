@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -26,7 +26,7 @@ import java.util.List;
 import shaft.dao.ResultSetHandler;
 import shaft.dao.RowMapper;
 
-public class RowListHandler<T> implements ResultSetHandler<List<T>> {
+public final class RowListHandler<T> implements ResultSetHandler<List<T>> {
 
     private RowMapper<T> mapper;
 
@@ -36,7 +36,7 @@ public class RowListHandler<T> implements ResultSetHandler<List<T>> {
 
     @Override
     public List<T> handle(ResultSet rs) throws SQLException {
-        List<T> rows = new ArrayList<T>();
+        List<T> rows = new ArrayList<>();
         while (rs.next()) {
             rows.add(mapper.handle(rs));
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import shaft.dao.RowMapper;
 import jetbrick.typecast.TypeCastUtils;
 
-public class SingleColumnRowMapper<T> implements RowMapper<T> {
+public final class SingleColumnRowMapper<T> implements RowMapper<T> {
 
     private Class<T> targetClass;
 

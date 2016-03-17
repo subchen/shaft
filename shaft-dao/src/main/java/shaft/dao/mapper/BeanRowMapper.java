@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -26,7 +26,7 @@ import shaft.dao.RowMapper;
 import jetbrick.typecast.TypeCastUtils;
 import jetbrick.util.IdentifiedNameUtils;
 
-public class BeanRowMapper<T> implements RowMapper<T> {
+public final class BeanRowMapper<T> implements RowMapper<T> {
     private KlassInfo klass;
 
     public BeanRowMapper(Class<T> beanClass) {

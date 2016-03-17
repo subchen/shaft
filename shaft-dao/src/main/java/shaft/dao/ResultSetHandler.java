@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -25,6 +25,7 @@ import java.sql.SQLException;
 /**
  * 将  ResultSet 转换成 T, 要求转换所有的行。
  */
+@FunctionalInterface
 public interface ResultSetHandler<T> {
 
     public T handle(ResultSet rs) throws SQLException;

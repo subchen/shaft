@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -36,7 +36,7 @@ import jetbrick.util.Validate;
  * 数据库操作。单例使用
  */
 @SuppressWarnings("unchecked")
-public class DbHelper {
+public final class DbHelper {
     private static final boolean ALLOW_NESTED_TRANSACTION = System.getProperty("shaft.dao.transaction.nested.disabled") == null;
 
     // 当前线程(事务)
@@ -332,31 +332,12 @@ public class DbHelper {
         }
     }
 
-    /**
-     * 判断表是否已经存在
-     */
-    public boolean tableExist(String name) {
-        Connection conn = null;
-        ResultSet rs = null;
-        try {
-            conn = getConnection();
-            DatabaseMetaData metaData = conn.getMetaData();
-            rs = metaData.getTables(null, null, name.toUpperCase(), new String[] { "TABLE" });
-            return rs.next();
-        } catch (SQLException e) {
-            throw new DbException(e);
-        } finally {
-            DbUtils.closeQuietly(rs);
-            closeConnection(conn);
-        }
-    }
-
     private <T> RowMapper<T> getRowMapper(Class<T> beanClass) {
         RowMapper<T> rowMapper;
-        if (beanClass.isArray()) {
-            rowMapper = (RowMapper<T>) new ArrayRowMapper();
-        } else if (beanClass.getName().equals("java.util.Map")) {
+        if (beanClass == Map.class) {
             rowMapper = (RowMapper<T>) new MapRowMapper();
+        } else if (beanClass.isArray()) {
+            rowMapper = (RowMapper<T>) new ArrayRowMapper();
         } else if (beanClass.getName().startsWith("java.")) {
             rowMapper = new SingleColumnRowMapper<T>(beanClass);
         } else {

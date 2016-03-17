@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -19,7 +19,7 @@
  */
 package shaft.dao;
 
-public class TransactionException extends DbException {
+public final class TransactionException extends DbException {
     private static final long serialVersionUID = 1L;
 
     public TransactionException() {

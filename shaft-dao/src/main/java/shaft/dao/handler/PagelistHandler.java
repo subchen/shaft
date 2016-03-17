@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -25,7 +25,7 @@ import java.util.*;
 import shaft.dao.ResultSetHandler;
 import shaft.dao.RowMapper;
 
-public class PagelistHandler<T> implements ResultSetHandler<List<T>> {
+public final class PagelistHandler<T> implements ResultSetHandler<List<T>> {
 
     private RowMapper<T> mapper;
     private int first;

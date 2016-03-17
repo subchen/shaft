@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import shaft.dao.ResultSetHandler;
 import shaft.dao.RowMapper;
 
-public class SingleRowHandler<T> implements ResultSetHandler<T> {
+public final class SingleRowHandler<T> implements ResultSetHandler<T> {
 
     private RowMapper<T> mapper;
 

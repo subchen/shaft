@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -28,7 +28,7 @@ import jetbrick.collection.iterator.ArrayIterator;
 import jetbrick.util.ClassUtils;
 import jetbrick.util.StringUtils;
 
-public class PreparedStatementCreator {
+public final class PreparedStatementCreator {
     private static final Pattern namedParameterPattern = Pattern.compile("\\:([a-zA-Z0-9_]+)");
 
     @SuppressWarnings("unchecked")

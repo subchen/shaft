@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -53,8 +53,8 @@ import java.util.*;
  * ResultSet rs = p.executeQuery();
  * </code></pre>
  */
-public class NamedParameterStatement extends PreparedStatementWrapper {
-    private static final HashMap<String, Map<String, List<Integer>>> nameIndexCache = new HashMap<String, Map<String, List<Integer>>>();
+public final class NamedParameterStatement extends PreparedStatementWrapper {
+    private static final HashMap<String, Map<String, List<Integer>>> nameIndexCache = new HashMap<>();
     private static final HashMap<String, String> parsedSqlCache = new HashMap<String, String>();
 
     private final String parsedSql;

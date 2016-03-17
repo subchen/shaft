@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2014 Guoqiang Chen, Shanghai, China. All rights reserved.
+ * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
  *
  *   Author: Guoqiang Chen
  *    Email: subchen@gmail.com
@@ -31,59 +31,59 @@ public class ResultSetGetter {
 
     @SuppressWarnings("unchecked")
     public static <T> T getValue(ResultSet rs, int index, Class<T> requiredType) throws SQLException {
-        Object value = null;
-        boolean wasNullCheck = false;
-
         if (requiredType == null) {
             return (T) rs.getObject(index);
         }
 
+        Object value = null;
+        boolean wasNullCheck = false;
+        
         requiredType = (Class<T>) ClassUtils.primitiveToWrapper(requiredType);
 
         // Explicitly extract typed value, as far as possible.
-        if (String.class.equals(requiredType)) {
+        if (requiredType == String.class) {
             value = rs.getString(index);
-        } else if (Integer.class.equals(requiredType)) {
+        } else if (requiredType == Integer.class) {
             value = Integer.valueOf(rs.getInt(index));
             wasNullCheck = true;
-        } else if (Double.class.equals(requiredType)) {
+        } else if (requiredType == Double.class) {
             value = new Double(rs.getDouble(index));
             wasNullCheck = true;
-        } else if (Boolean.class.equals(requiredType)) {
+        } else if (requiredType == Boolean.class) {
             value = (rs.getBoolean(index) ? Boolean.TRUE : Boolean.FALSE);
             wasNullCheck = true;
-        } else if (java.sql.Date.class.equals(requiredType)) {
+        } else if (requiredType == java.sql.Date.class) {
             value = rs.getDate(index);
-        } else if (java.sql.Time.class.equals(requiredType)) {
+        } else if (requiredType == java.sql.Time.class) {
             value = rs.getTime(index);
-        } else if (java.sql.Timestamp.class.equals(requiredType)) {
+        } else if (requiredType == java.sql.Timestamp.class) {
             value = rs.getTimestamp(index);
-        } else if (java.util.Date.class.equals(requiredType)) {
+        } else if (requiredType == java.util.Date.class) {
             value = new java.util.Date(rs.getTimestamp(index).getTime());
-        } else if (Byte.class.equals(requiredType)) {
+        } else if (requiredType == Byte.class) {
             value = Byte.valueOf(rs.getByte(index));
             wasNullCheck = true;
-        } else if (Short.class.equals(requiredType)) {
+        } else if (requiredType == Short.class) {
             value = Short.valueOf(rs.getShort(index));
             wasNullCheck = true;
-        } else if (Long.class.equals(requiredType)) {
+        } else if (requiredType == Long.class) {
             value = Long.valueOf(rs.getLong(index));
             wasNullCheck = true;
-        } else if (Float.class.equals(requiredType)) {
+        } else if (requiredType == Float.class) {
             value = new Float(rs.getFloat(index));
             wasNullCheck = true;
-        } else if (Number.class.equals(requiredType)) {
+        } else if (requiredType == Number.class) {
             value = new Double(rs.getDouble(index));
             wasNullCheck = true;
-        } else if (byte[].class.equals(requiredType)) {
+        } else if (requiredType == byte[].class) {
             value = rs.getBytes(index);
-        } else if (java.math.BigDecimal.class.equals(requiredType)) {
+        } else if (requiredType == java.math.BigDecimal.class) {
             value = rs.getBigDecimal(index);
-        } else if (java.sql.Blob.class.equals(requiredType)) {
+        } else if (requiredType == java.sql.Blob.class) {
             value = rs.getBlob(index);
-        } else if (java.sql.Clob.class.equals(requiredType)) {
+        } else if (requiredType == java.sql.Clob.class) {
             value = rs.getClob(index);
-        } else if (java.net.URL.class.equals(requiredType)) {
+        } else if (requiredType == java.net.URL.class) {
             value = rs.getURL(index);
         } else {
             // Some unknown type desired -> rely on getObject.
