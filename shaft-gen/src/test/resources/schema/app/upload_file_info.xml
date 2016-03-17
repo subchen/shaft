@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<table display-name="文件">
+
+    <column name="parent_type"
+            type="enum"
+            display-name="文件分类"
+            >
+        <enum-group pid="891">
+            <enum id="1" var="download" name="文档下载" />
+            <enum id="2" var="article" name="文章内嵌入图片等资源" />
+            <enum id="3" var="bulkload" name="批量导入文件" />
+        </enum-group>
+    </column>     
+        
+    <column name="parent_id"
+            type="uid"
+            display-name="ParentID"
+            />
+
+    <column name="disk_file_path"
+            type="varchar(250)"
+            display-name="存储文件路径名"
+            />
+
+    <column name="original_file_name"
+            type="varchar(250)"
+            display-name="原始文件名"
+            />
+
+    <column name="file_ext"
+            type="varchar(10)"
+            display-name="文件扩展名"
+            />
+
+    <column name="size"
+            type="long"
+            display-name="文件大小"
+            />
+
+    <column name="uploader_id"
+            type="uid"
+            display-name="上传用户"
+            >
+         <one-to-many reference-table="login_info" import-name="uploader_user" export-name="auto" />
+    </column>
+
+    <column name="update_date" 
+            type="datetime"	
+            display-name="上传时间"
+            />
+</table>
+

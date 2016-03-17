@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<enum-list>
+    <enum-group pid="921" desc="民族">
+        <enum id="00" name="其他" />
+        <enum id="01" name="汉族" />
+        <enum id="02" name="蒙古族" />
+        <enum id="03" name="彝族" />
+        <enum id="04" name="侗族" />
+        <enum id="05" name="哈萨克族" />
+        <enum id="06" name="畲族" />
+        <enum id="07" name="纳西族" />
+        <enum id="08" name="仫佬族" />
+        <enum id="09" name="仡佬族" />
+        <enum id="10" name="怒族" />
+        <enum id="11" name="保安族" />
+        <enum id="12" name="鄂伦春族" />
+        <enum id="13" name="回族" />
+        <enum id="14" name="壮族" />
+        <enum id="15" name="瑶族" />
+        <enum id="16" name="傣族" />
+        <enum id="17" name="高山族" />
+        <enum id="18" name="景颇族" />
+        <enum id="19" name="羌族" />
+        <enum id="20" name="锡伯族" />
+        <enum id="21" name="乌孜别克族" />
+        <enum id="22" name="裕固族" />
+        <enum id="23" name="赫哲族" />
+        <enum id="24" name="藏族" />
+        <enum id="25" name="布依族" />
+        <enum id="26" name="白族" />
+        <enum id="27" name="黎族" />
+        <enum id="28" name="拉祜族" />
+        <enum id="29" name="柯尔克孜族" />
+        <enum id="30" name="布朗族" />
+        <enum id="31" name="阿昌族" />
+        <enum id="32" name="俄罗斯族" />
+        <enum id="33" name="京族" />
+        <enum id="34" name="门巴族" />
+        <enum id="35" name="维吾尔族" />
+        <enum id="36" name="朝鲜族" />
+        <enum id="37" name="土家族" />
+        <enum id="38" name="傈僳族" />
+        <enum id="39" name="水族" />
+        <enum id="40" name="土族" />
+        <enum id="41" name="撒拉族" />
+        <enum id="42" name="普米族" />
+        <enum id="43" name="鄂温克族" />
+        <enum id="44" name="塔塔尔族" />
+        <enum id="45" name="珞巴族" />
+        <enum id="46" name="苗族" />
+        <enum id="47" name="满族" />
+        <enum id="48" name="哈尼族" />
+        <enum id="49" name="佤族" />
+        <enum id="50" name="东乡族" />
+        <enum id="51" name="达斡尔族" />
+        <enum id="52" name="毛南族" />
+        <enum id="53" name="塔吉克族" />
+        <enum id="54" name="德昂族" />
+        <enum id="55" name="独龙族" />
+        <enum id="56" name="基诺族" />
+    </enum-group>
+
+    <enum-group pid="923" desc="婚姻状况">
+        <enum id="0" name="保密" />
+        <enum id="1" name="未婚" />
+        <enum id="2" name="已婚" />
+        <enum id="3" name="丧偶" />
+        <enum id="4" name="离婚" />
+    </enum-group>
+
+    <enum-group pid="924" class="gender" desc="性别">
+        <enum id="0" var="unknown" name="保密" />
+        <enum id="1" var="male" name="男" />
+        <enum id="2" var="female" name="女" />
+    </enum-group>
+
+    <enum-group pid="925" desc="政治面貌">
+        <enum id="00" name="未知" />
+        <enum id="01" name="中共党员" />
+        <enum id="02" name="预备党员" />
+        <enum id="03" name="共青团员" />
+        <enum id="04" name="民革会员" />
+        <enum id="05" name="民盟盟员" />
+        <enum id="06" name="民建会员" />
+        <enum id="07" name="民进会员" />
+        <enum id="08" name="农工党员" />
+        <enum id="09" name="致公党员" />
+        <enum id="10" name="九三社员" />
+        <enum id="12" name="民主人士" />
+        <enum id="13" name="群众" />
+    </enum-group>
+
+    <enum-group pid="926" desc="12生肖">
+        <enum id="00" name="未知" />
+        <enum id="01" name="鼠" />
+        <enum id="02" name="牛" />
+        <enum id="03" name="虎" />
+        <enum id="04" name="兔" />
+        <enum id="05" name="龙" />
+        <enum id="06" name="蛇" />
+        <enum id="07" name="马" />
+        <enum id="08" name="羊" />
+        <enum id="09" name="猴" />
+        <enum id="10" name="鸡" />
+        <enum id="11" name="狗" />
+        <enum id="12" name="猪" />
+    </enum-group>
+
+    <enum-group pid="927" desc="12星座">
+        <enum id="00" name="未知" />
+        <enum id="01" name="白羊座" />
+        <enum id="02" name="金牛座" />
+        <enum id="03" name="双子座" />
+        <enum id="04" name="巨蟹座" />
+        <enum id="05" name="狮子座" />
+        <enum id="06" name="处女座" />
+        <enum id="07" name="天秤座" />
+        <enum id="08" name="天蝎座" />
+        <enum id="09" name="射手座" />
+        <enum id="10" name="魔羯座" />
+        <enum id="11" name="水瓶座" />
+        <enum id="12" name="双鱼座" />
+    </enum-group>
+
+    <enum-group pid="928" desc="基本行业分类">
+        <enum id="00" name="其他行业" />
+        <enum id="01" name="农、林、牧、渔业" />
+        <enum id="02" name="采掘业" />
+        <enum id="03" name="制造业" />
+        <enum id="04" name="电力、燃气及水的生产和供应业" />
+        <enum id="05" name="建筑业" />
+        <enum id="06" name="交通运输、仓储和邮政业" />
+        <enum id="07" name="信息传输、计算机服务和软件业" />
+        <enum id="08" name="批发和零售业" />
+        <enum id="09" name="住宿和餐饮业" />
+        <enum id="10" name="金融业" />
+        <enum id="11" name="房地产业" />
+        <enum id="12" name="租赁和商务服务业" />
+        <enum id="13" name="科学研究、技术服务和地质勘查业" />
+        <enum id="14" name="水利、环境和公共设施管理业" />
+        <enum id="15" name="居民服务和其他服务业" />
+        <enum id="16" name="教育" />
+        <enum id="17" name="卫生、社会保障和社会福利业" />
+        <enum id="18" name="文化、体育和娱乐业" />
+        <enum id="19" name="公共管理与社会组织" />
+        <enum id="20" name="国际组织" />
+    </enum-group>
+
+    <enum-group pid="931" desc="学历">
+        <enum id="00" name="未知" />
+        <enum id="01" name="博士研究生" />
+        <enum id="11" name="硕士研究生" />
+        <enum id="19" name="研究生肄业" />
+        <enum id="20" name="大学本科" />
+        <enum id="21" name="大学毕业" />
+        <enum id="28" name="相当大学毕业" />
+        <enum id="29" name="大学肄业" />
+        <enum id="30" name="大学专科和专科学校" />
+        <enum id="31" name="专科毕业" />
+        <enum id="38" name="相当专科毕业" />
+        <enum id="39" name="专科肄业" />
+        <enum id="40" name="中专或中技" />
+        <enum id="41" name="中专毕业" />
+        <enum id="42" name="中技毕业" />
+        <enum id="48" name="相当中专或中技毕业" />
+        <enum id="49" name="中专或中技肄业" />
+        <enum id="50" name="技工学校" />
+        <enum id="51" name="技工学校毕业" />
+        <enum id="60" name="高中" />
+        <enum id="61" name="高中毕业" />
+        <enum id="62" name="职业高中毕业" />
+        <enum id="68" name="相当高中毕业" />
+        <enum id="69" name="高中肄业" />
+        <enum id="70" name="初中" />
+        <enum id="71" name="初中毕业" />
+        <enum id="79" name="初中肄业" />
+    </enum-group>
+
+    <enum-group pid="933" desc="职称">
+        <enum id="000" name="无" />
+        <enum id="011" name="教授" />
+        <enum id="012" name="副教授" />
+        <enum id="013" name="讲师" />
+        <enum id="014" name="助教" />
+        <enum id="022" name="高级讲师" />
+        <enum id="024" name="助理讲师" />
+        <enum id="052" name="中学高级教师" />
+        <enum id="053" name="中学一级教师" />
+        <enum id="054" name="中学二级教师" />
+        <enum id="055" name="中学三级教师" />
+        <enum id="061" name="研究员" />
+        <enum id="062" name="副研究员" />
+        <enum id="063" name="助理研究员" />
+        <enum id="064" name="研究实习员" />
+        <enum id="072" name="高级实验师" />
+        <enum id="073" name="实验师" />
+        <enum id="074" name="助理实验师" />
+        <enum id="075" name="实验员" />
+        <enum id="081" name="高级工程师（教授级）" />
+        <enum id="082" name="高级工程师" />
+        <enum id="083" name="工程师" />
+        <enum id="084" name="助理工程师" />
+        <enum id="085" name="技术员" />
+        <enum id="093" name="农艺师" />
+        <enum id="122" name="高级经济师" />
+        <enum id="123" name="经济师" />
+        <enum id="124" name="助理经济师" />
+        <enum id="125" name="经济员" />
+        <enum id="132" name="高级会计师" />
+        <enum id="133" name="会计师" />
+        <enum id="134" name="助理会计师" />
+        <enum id="135" name="会计员" />
+        <enum id="143" name="统计师" />
+        <enum id="144" name="助理统计师" />
+        <enum id="145" name="统计员" />
+        <enum id="151" name="编审" />
+        <enum id="152" name="副编审" />
+        <enum id="153" name="编辑" />
+        <enum id="154" name="助理编辑" />
+        <enum id="163" name="技术编辑" />
+        <enum id="164" name="助理技术编辑" />
+        <enum id="165" name="技术设计员" />
+        <enum id="175" name="三级校对" />
+        <enum id="183" name="翻译" />
+        <enum id="194" name="助理记者" />
+        <enum id="203" name="编辑" />
+        <enum id="211" name="研究馆员" />
+        <enum id="212" name="副研究馆员" />
+        <enum id="213" name="馆员" />
+        <enum id="214" name="助理馆员" />
+        <enum id="215" name="管理员" />
+        <enum id="231" name="主任医师" />
+        <enum id="232" name="副主任医师" />
+        <enum id="233" name="主治医师" />
+        <enum id="234" name="医师" />
+        <enum id="235" name="医士" />
+        <enum id="243" name="主管药师" />
+        <enum id="244" name="药师" />
+        <enum id="253" name="主管护师" />
+        <enum id="254" name="护师" />
+        <enum id="255" name="护士" />
+        <enum id="263" name="主管技师" />
+        <enum id="264" name="技师" />
+        <enum id="272" name="高级工艺美术师" />
+        <enum id="273" name="工艺美术师" />
+        <enum id="274" name="助理工艺美术师" />
+        <enum id="281" name="一级演员" />
+        <enum id="331" name="一级作曲" />
+        <enum id="341" name="一级美术师" />
+        <enum id="342" name="二级美术师" />
+        <enum id="413" name="小学高级教师" />
+        <enum id="414" name="小学一级教师" />
+        <enum id="415" name="小学二级教师" />
+        <enum id="503" name="政工师" />
+        <enum id="614" name="助理审计师" />
+        <enum id="623" name="幼儿园高级教师" />
+        <enum id="653" name="助理研究员" />
+        <enum id="654" name="研究实习员" />
+        <enum id="993" name="中级" />
+        <enum id="994" name="初级" />
+    </enum-group>
+
+    <enum-group pid="934" desc="职级">
+        <enum id="00" name="无" />
+        <enum id="01" name="国家级正职" />
+        <enum id="02" name="国家级副职" />
+        <enum id="03" name="正部级" />
+        <enum id="04" name="副部级" />
+        <enum id="05" name="正局级" />
+        <enum id="06" name="副局级" />
+        <enum id="07" name="正处级" />
+        <enum id="08" name="副处级" />
+        <enum id="09" name="正科级" />
+        <enum id="10" name="副科级" />
+        <enum id="11" name="科员级" />
+        <enum id="12" name="办事员" />
+    </enum-group>
+
+    <enum-group pid="951" class="user_type" desc="用户类型">
+        <enum id="1" var="teacher" name="教职工" />
+        <enum id="2" var="student" name="本科生" />
+        <enum id="3" var="postgraduate" name="研究生" />
+        <enum id="4" var="guest" name="校外用户" />
+		<enum id="9" var="admin" name="超级管理员" />
+    </enum-group>
+
+    <enum-group pid="807" class="article_type" desc="文章分类">
+        <enum id="01" name="新闻" />
+        <enum id="02" name="通知" />
+    </enum-group>
+    
+</enum-list>
+

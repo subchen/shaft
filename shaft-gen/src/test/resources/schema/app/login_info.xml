@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<table display-name="登录用户信息">
+			
+    <column name="username" 
+            type="varchar(50)"	
+            display-name="用户名"
+            />
+    <column name="password" 
+            type="varchar(32)"
+			nullable="true"
+            json="false"
+            display-name="密码"
+            />
+
+    <column name="name" 
+            type="varchar(50)"
+            display-name="姓名"
+            />
+
+    <column name="status"
+            type="enum"
+            display-name="用户状态"
+			>
+		<enum-group pid="852">
+			<enum id="0" var="active" name="正常" />
+			<enum id="1" var="inactive" name="未激活" />
+			<enum id="2" var="locked" name="锁定" />
+			<enum id="3" var="invalid" name="无效" />
+			<enum id="4" var="unused" name="未使用" />
+		</enum-group>
+	</column>
+
+    <column name="sn"
+            type="char(32)"
+            nullable="true"
+            json="false"
+            display-name="激活码"
+            />
+
+    <column name="email"
+            type="varchar(50)"
+            nullable="true"
+            display-name="电子邮件"
+            />
+    <column name="telephone"
+            type="varchar(20)"
+            nullable="true"
+            display-name="联系电话"
+            />
+			
+    <column name="last_ip"
+            type="varchar(50)"
+            nullable="true"
+            display-name="上次登录IP地址"
+            />
+    <column name="last_time"
+            type="datetime"
+            nullable="true"
+            display-name="上次登录时间"
+            />
+			
+</table>

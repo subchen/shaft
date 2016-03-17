@@ -1,0 +1,15 @@
+*.class
+*.jar
+*.zip
+*.asc
+
+target/
+
+.project
+.classpath
+.settings/
+
+*.iml
+.idea/
+
+!Jdk8Lambda.class

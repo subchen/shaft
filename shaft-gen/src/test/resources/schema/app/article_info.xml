@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<table display-name="文章库">
+
+    <column name="type"
+            type="enum"
+            display-name="分类"
+            enum-group-ref="807"
+            />
+
+    <column name="headline"
+            type="varchar(250)"
+            display-name="标题"
+            />
+    <column name="subhead"
+            type="varchar(250)"
+            nullable="true"
+            display-name="副标题"
+            />
+
+    <column name="format"
+            type="enum"
+            display-name="原始格式"
+            json="false">
+        <enum-group pid="952">
+            <enum id="0" var="text" name="Text" />
+            <enum id="1" var="html" name="Html" />
+            <enum id="2" var="markdown" name="Markdown" />
+        </enum-group>
+    </column>                    
+                     
+    <column name="source"
+            type="text"
+            display-name="源内容"
+            />
+    <column name="content"
+            type="text"
+            display-name="HTML内容"
+            />
+
+    <column name="tags"
+            type="varchar(50)"
+            display-name="Tag标签"
+            display-desc="由逗号分隔的多个tags，在界面上显示，不需要查询关联表。"
+            />
+            
+    <column name="sort"
+            type="int"
+            display-name="置顶顺序"
+            default="0"
+            />
+            
+    <column name="last_user_id"
+            type="uid"
+            display-name="最后修改用户"
+            >
+         <one-to-many reference-table="login_info" import-name="last_user" export-name="auto" />
+    </column>
+    
+    <column name="last_modified"
+            type="datetime"
+            display-name="最后修改时间"
+            json="false"
+            />
+
+    <index unique="false" columns="sort, last_modified" sorts="desc, desc" />
+
+</table>

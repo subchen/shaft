@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<table display-name="标签">
+
+    <column name="type"
+            type="enum"
+            display-name="分类"
+            enum-group-ref="807"
+            />
+
+    <column name="tag"
+            type="varchar(20)"
+            display-name="Tag名称"
+            />
+    <column name="description"
+            type="varchar(50)"
+            nullable="true"
+            display-name="描述"
+            />
+            
+    <column name="color"
+            type="varchar(10)"
+            nullable="true"
+            display-name="显示的颜色"
+            />
+    <column name="count"
+            type="int"
+            default="0"
+            display-name="某个分类下的tag对应的文章数量"
+            />
+    <column name="hits"
+            type="int"
+            default="0"
+            display-name="某个分类下的tag被点击的次数"
+            />
+            
+</table>

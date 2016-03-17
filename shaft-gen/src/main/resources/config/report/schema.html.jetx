@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Schema for ${schema.dialect.name}</title>
+</head>
+
+<body>
+
+<div style="float:left; clear:both;">
+#for(TableInfo t: schema.tables)
+    <div><a href="#${t.tableName}" title="${t.displayName}">${t.tableName}</a></div>
+#end
+</div>
+
+<a name="top"></a>
+<div style="padding-left:250px; width:900px;">
+#for(TableInfo t: schema.tables)
+    <div>
+        <a href="#top" style="float:right;">top</a>
+        <a name="${t.tableName}"></a>
+        <h3>${t.displayName} (${t.tableName}) (${t.fullClassName()})</h3>
+    </div>
+    <table cellPadding="4" cellSpacing="1" border="0" style="background-color:black; width:100%;">
+        <tr style="background-color:#cc6600; color:white; text-align:center;">
+            <td width="120">名称</td>
+            <td width="120">字段</td>
+            <td width="100">类型</td>
+            <td width="40">nullable</td>
+            <td width="40">主键</td>
+            <td width="60">默认值</td>
+            <td>备注</td>
+        </tr>
+    #for(TableColumn c: t.columns)
+        <tr style="background-color:white;">
+            <td>${c.displayName}</td>
+            <td>${c.columnName}</td>
+            <td>${c.sqlTypeName()}</td>
+            <td align="center">${c.nullable ? 'yes' : ''}</td>
+            <td align="center">${c.primaryKey ? 'yes' : ''}</td>
+            <td style="word-break:break-all;">${c.defaultValue}</td>
+            <td style="word-break:break-all;">${c.enumGroupDescription()}</td>
+        </tr>
+    #end
+    </table>
+    <br/>
+
+#end
+</div>
+
+</body>
+</html>
+

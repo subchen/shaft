@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<table display-name="Tag对应的文章">
+
+    <column name="type"
+            type="enum"
+            display-name="分类"
+            enum-group-ref="807"
+            />
+
+    <column name="tag"
+            type="varchar(20)"
+            display-name="Tag名称"
+            />
+    <column name="target_id"
+            type="uid"
+            display-name="对应文章的ID"
+            >
+         <one-to-many reference-table="article_info" import-name="article" />
+    </column>
+            
+</table>
