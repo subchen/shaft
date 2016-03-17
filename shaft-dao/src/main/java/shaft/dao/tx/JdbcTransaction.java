@@ -29,20 +29,20 @@ import shaft.dao.util.DbUtils;
  */
 public final class JdbcTransaction implements Transaction {
     private final Connection conn;
-    private final int defaultLevel;
+    private final int defaultIsolationLevel;
     private final ThreadLocal<JdbcTransaction> transationHandler;
 
-    public JdbcTransaction(Connection conn, int level, ThreadLocal<JdbcTransaction> transationHandler) {
+    public JdbcTransaction(Connection conn, int isolationLevel, ThreadLocal<JdbcTransaction> transationHandler) {
         this.conn = conn;
         this.transationHandler = transationHandler;
-        this.defaultLevel = conn.getTransactionIsolation();
+        this.defaultIsolationLevel = conn.getTransactionIsolation();
 
         try {
             if (conn.getAutoCommit()) {
                 conn.setAutoCommit(false);
             }
-            if (level != Transaction.DEFAULT_LEVEL) {
-                conn.setTransactionIsolation(level);
+            if (isolationLevel != Transaction.DEFAULT_ISOLATION_LEVEL) {
+                conn.setTransactionIsolation(isolationLevel);
             }
         } catch (SQLException e) {
             throw new TransactionException(e);
@@ -95,7 +95,7 @@ public final class JdbcTransaction implements Transaction {
                 throw new TransactionException("the connection is closed in transaction.");
             }
             conn.setAutoCommit(false);
-            conn.setTransactionIsolation(defaultLevel);
+            conn.setTransactionIsolation(defaultIsolationLevel);
             DbUtils.closeQuietly(conn);
         } catch (SQLException e) {
             throw new TransactionException(e);

@@ -24,7 +24,7 @@ package shaft.dao.tx;
  */
 public interface Transaction {
     
-    public static final int DEFAULT_LEVEL = -1;
+    public static final int DEFAULT_ISOLATION_LEVEL = -1;
     
     /**
      * 提交一个事务

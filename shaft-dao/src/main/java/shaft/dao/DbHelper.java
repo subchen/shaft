@@ -63,7 +63,7 @@ public class DbHelper {
      * 启动一个事务(默认支持子事务)
      */
     public Transaction transaction() {
-        transaction(Transaction.DEFAULT_LEVEL);
+        transaction(Transaction.DEFAULT_ISOLATION_LEVEL);
     }
     
     /**
@@ -71,7 +71,7 @@ public class DbHelper {
      * 
      * @param level 事务隔离级别
      */
-    public Transaction transaction(int level) {
+    public Transaction transaction(int isolationLevel) {
         if (transationHandler.get() != null) {
             if (ALLOW_NESTED_TRANSACTION) {
                 return new JdbcNestedTransaction(transationHandler.get().getConnection());
@@ -79,7 +79,7 @@ public class DbHelper {
             throw new TransactionException("Can't begin a nested transaction.");
         }
         try {
-            JdbcTransaction tx = new JdbcTransaction(dataSource.getConnection(), level, transationHandler);
+            JdbcTransaction tx = new JdbcTransaction(dataSource.getConnection(), isolationLevel, transationHandler);
             transationHandler.set(tx);
             return tx;
         } catch (SQLException e) {
