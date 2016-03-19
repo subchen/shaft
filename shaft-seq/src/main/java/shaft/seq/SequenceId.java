@@ -17,9 +17,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.id;
+package shaft.seq;
 
-public class SequenceId {
+public final class SequenceId {
     public static final int NOT_FOUND = 0;
     private static final int CACHE_SIZE = 50;
     private final SequenceIdProvider provider;

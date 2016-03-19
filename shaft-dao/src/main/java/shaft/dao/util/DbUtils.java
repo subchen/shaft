@@ -1,16 +1,16 @@
 /**
  * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
- *
- *   Author: Guoqiang Chen
- *    Email: subchen@gmail.com
- *   WebURL: https://github.com/subchen
- *
+ * <p>
+ * Author: Guoqiang Chen
+ * Email: subchen@gmail.com
+ * WebURL: https://github.com/subchen
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,13 +19,14 @@
  */
 package shaft.dao.util;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.regex.Pattern;
-import javax.sql.DataSource;
-import shaft.dao.dialect.SqlDialect;
-import jetbrick.util.ExceptionUtils;
 
 public final class DbUtils {
+
     public static void closeQuietly(Connection conn) {
         try {
             if (conn != null) conn.close();
@@ -44,42 +45,6 @@ public final class DbUtils {
         try {
             if (rs != null) rs.close();
         } catch (SQLException e) {
-        }
-    }
-
-    public static boolean doGetTableExist(Connection conn, String tabelName) {
-        ResultSet rs = null;
-        try {
-            DatabaseMetaData metaData = conn.getMetaData();
-            rs = metaData.getTables(null, null, tabelName.toUpperCase(), new String[] { "TABLE" });
-            return rs.next();
-        } catch (SQLException e) {
-            throw ExceptionUtils.unchecked(e);
-        } finally {
-            DbUtils.closeQuietly(rs);
-        }
-    }
-
-    public static SqlDialect doGetDialect(DataSource dataSource) {
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-            return DbUtils.doGetDialect(conn);
-        } catch (SQLException e) {
-            throw ExceptionUtils.unchecked(e);
-        } finally {
-            DbUtils.closeQuietly(conn);
-        }
-    }
-
-    public static SqlDialect doGetDialect(Connection conn) {
-        try {
-            String name = conn.getMetaData().getDatabaseProductName();
-            return SqlDialect.getDialect(name);
-        } catch (SQLException e) {
-            throw ExceptionUtils.unchecked(e);
-        } finally {
-            DbUtils.closeQuietly(conn);
         }
     }
 

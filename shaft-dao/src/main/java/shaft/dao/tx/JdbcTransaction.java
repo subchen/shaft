@@ -1,16 +1,16 @@
 /**
  * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
- *
- *   Author: Guoqiang Chen
- *    Email: subchen@gmail.com
- *   WebURL: https://github.com/subchen
- *
+ * <p>
+ * Author: Guoqiang Chen
+ * Email: subchen@gmail.com
+ * WebURL: https://github.com/subchen
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,10 +19,11 @@
  */
 package shaft.dao.tx;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import shaft.dao.TransactionException;
 import shaft.dao.util.DbUtils;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Jdbc 事务对象
@@ -30,17 +31,18 @@ import shaft.dao.util.DbUtils;
 public final class JdbcTransaction implements Transaction {
     private final Connection conn;
     private final int defaultIsolationLevel;
-    private final ThreadLocal<JdbcTransaction> transationHandler;
+    private final ThreadLocal<JdbcTransaction> transactionHandler;
 
-    public JdbcTransaction(Connection conn, int isolationLevel, ThreadLocal<JdbcTransaction> transationHandler) {
+    public JdbcTransaction(Connection conn, int isolationLevel, ThreadLocal<JdbcTransaction> transactionHandler) {
         this.conn = conn;
-        this.transationHandler = transationHandler;
-        this.defaultIsolationLevel = conn.getTransactionIsolation();
+        this.transactionHandler = transactionHandler;
 
         try {
             if (conn.getAutoCommit()) {
                 conn.setAutoCommit(false);
             }
+
+            this.defaultIsolationLevel = conn.getTransactionIsolation();
             if (isolationLevel != Transaction.DEFAULT_ISOLATION_LEVEL) {
                 conn.setTransactionIsolation(isolationLevel);
             }
@@ -100,7 +102,7 @@ public final class JdbcTransaction implements Transaction {
         } catch (SQLException e) {
             throw new TransactionException(e);
         } finally {
-            transationHandler.set(null);
+            transactionHandler.set(null);
         }
     }
 

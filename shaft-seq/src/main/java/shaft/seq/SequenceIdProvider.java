@@ -17,16 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.id;
+package shaft.seq;
 
 public interface SequenceIdProvider {
 
-    public SequenceId create(String name);
+    SequenceId create(String name);
 
-    public SequenceId create(String name, int begin);
+    SequenceId create(String name, int begin);
 
-    public int load(String name);
+    int load(String name);
 
-    public void store(String name, int value);
+    void store(String name, int value);
 
 }

@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.dao.id;
+package shaft.seq;
 
-import java.sql.*;
 import javax.sql.DataSource;
+import java.sql.*;
 
-public class JdbcSequenceIdProvider implements SequenceIdProvider {
+public final class JdbcSequenceIdProvider implements SequenceIdProvider {
 
     private static final String TABLE_NAME = "_SEQUANCE_";
     private final DataSource dataSource;

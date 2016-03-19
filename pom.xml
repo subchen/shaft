@@ -25,6 +25,10 @@
 
     <modules>
         <module>shaft-dao</module>
+        <module>shaft-entity</module>
+        <module>shaft-gen</module>
+        <module>shaft-seq</module>
+        <module>shaft-sync</module>
     </modules>
 
     <scm>

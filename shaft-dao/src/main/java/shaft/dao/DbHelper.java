@@ -1,16 +1,16 @@
 /**
  * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
- *
- *   Author: Guoqiang Chen
- *    Email: subchen@gmail.com
- *   WebURL: https://github.com/subchen
- *
+ * <p>
+ * Author: Guoqiang Chen
+ * Email: subchen@gmail.com
+ * WebURL: https://github.com/subchen
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,28 +19,42 @@
  */
 package shaft.dao;
 
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-import javax.sql.DataSource;
-import shaft.dao.DbException;
-import shaft.dao.TransactionException;
-import shaft.dao.handler.*;
-import shaft.dao.mapper.*;
-import shaft.dao.tx.*;
+import jetbrick.util.Validate;
+import shaft.dao.handler.PagelistHandler;
+import shaft.dao.handler.RowListHandler;
+import shaft.dao.handler.SingleRowHandler;
+import shaft.dao.mapper.ArrayRowMapper;
+import shaft.dao.mapper.BeanRowMapper;
+import shaft.dao.mapper.MapRowMapper;
+import shaft.dao.mapper.SingleColumnRowMapper;
+import shaft.dao.metadata.Metadata;
+import shaft.dao.tx.JdbcNestedTransaction;
+import shaft.dao.tx.JdbcTransaction;
+import shaft.dao.tx.Transaction;
 import shaft.dao.util.DbUtils;
 import shaft.dao.util.PreparedStatementCreator;
-import jetbrick.util.Validate;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库操作。单例使用
  */
 @SuppressWarnings("unchecked")
 public final class DbHelper {
-    private static final boolean ALLOW_NESTED_TRANSACTION = System.getProperty("shaft.dao.transaction.nested.disabled") == null;
+    public static final String KEY_TRANSACTION_NESTED_ENABLED = "shaft.dao.transaction.nested.disabled";
+
+    private static final boolean TRANSACTION_NESTED_ENABLED = "true".equals(System.getProperty(KEY_TRANSACTION_NESTED_ENABLED));
 
     // 当前线程(事务)
-    private final ThreadLocal<JdbcTransaction> transationHandler = new ThreadLocal<JdbcTransaction>();
+    private final ThreadLocal<JdbcTransaction> transactionHandler = new ThreadLocal<>();
     private final DataSource dataSource;
     private Metadata metaData;
 
@@ -51,7 +65,7 @@ public final class DbHelper {
     public DataSource getDataSource() {
         return dataSource;
     }
-    
+
     public Metadata getMetadata() {
         if (metaData == null) {
             metaData = new Metadata(this);
@@ -60,27 +74,28 @@ public final class DbHelper {
     }
 
     /**
-     * 启动一个事务(默认支持子事务)
+     * 启动一个事务
      */
     public Transaction transaction() {
         transaction(Transaction.DEFAULT_ISOLATION_LEVEL);
     }
-    
+
     /**
-     * 启动一个事务(默认支持子事务)
-     * 
-     * @param level 事务隔离级别
+     * 启动一个事务
+     *
+     * @param isolationLevel 事务隔离级别
+     * @return 事务对象
      */
     public Transaction transaction(int isolationLevel) {
-        if (transationHandler.get() != null) {
-            if (ALLOW_NESTED_TRANSACTION) {
-                return new JdbcNestedTransaction(transationHandler.get().getConnection());
+        if (transactionHandler.get() != null) {
+            if (TRANSACTION_NESTED_ENABLED) {
+                return new JdbcNestedTransaction(transactionHandler.get().getConnection());
             }
             throw new TransactionException("Can't begin a nested transaction.");
         }
         try {
-            JdbcTransaction tx = new JdbcTransaction(dataSource.getConnection(), isolationLevel, transationHandler);
-            transationHandler.set(tx);
+            JdbcTransaction tx = new JdbcTransaction(dataSource.getConnection(), isolationLevel, transactionHandler);
+            transactionHandler.set(tx);
             return tx;
         } catch (SQLException e) {
             throw new TransactionException(e);
@@ -91,7 +106,7 @@ public final class DbHelper {
      * 获取一个当前线程的连接(事务中)，如果没有，则新建一个。
      */
     private Connection getConnection() {
-        JdbcTransaction tx = transationHandler.get();
+        JdbcTransaction tx = transactionHandler.get();
         try {
             if (tx == null) {
                 return dataSource.getConnection();
@@ -107,7 +122,7 @@ public final class DbHelper {
      * 释放一个连接，如果 Connection 不在事务中，则关闭它，否则不处理。
      */
     private void closeConnection(Connection conn) {
-        if (transationHandler.get() == null) {
+        if (transactionHandler.get() == null) {
             // not in transaction, close it
             DbUtils.closeQuietly(conn);
         }
@@ -150,7 +165,7 @@ public final class DbHelper {
     public Double queryAsDouble(String sql, Object... parameters) {
         return queryAsObject(Double.class, sql, parameters);
     }
-    
+
     public String queryAsString(String sql, Object... parameters) {
         return queryAsObject(String.class, sql, parameters);
     }
