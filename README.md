@@ -1,3 +1,1 @@
-# Shaft
-
-Java simple database operation framework
+In progress
