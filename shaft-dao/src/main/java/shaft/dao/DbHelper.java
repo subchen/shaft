@@ -302,11 +302,11 @@ public final class DbHelper {
         return rows;
     }
 
-    public void execute(ConnectionCallback callback) {
+    public <T> T execute(ConnectionCallback<T> callback) {
         Connection conn = null;
         try {
             conn = getConnection();
-            callback.execute(conn);
+            return callback.execute(conn);
         } catch (SQLException e) {
             throw new DbException(e);
         } finally {
@@ -340,6 +340,18 @@ public final class DbHelper {
                     return callback.execute(rs);
                 }
             }
+        } catch (SQLException e) {
+            throw new DbException(e);
+        } finally {
+            closeConnection(conn);
+        }
+    }
+
+    public <T> T executeMetaData(MetadataCallback<T> callback) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            return callback.execute(conn.getMetaData());
         } catch (SQLException e) {
             throw new DbException(e);
         } finally {

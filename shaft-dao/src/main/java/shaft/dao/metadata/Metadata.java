@@ -19,13 +19,9 @@
  */
 package shaft.dao.metadata;
 
-import com.sun.istack.internal.Nullable;
-import shaft.dao.DbException;
 import shaft.dao.DbHelper;
 
 import javax.annotation.Nullable;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,45 +35,41 @@ public final class Metadata {
     }
 
     public String getDatabaseName() {
-        try (Connection conn = db.getConnection()) {
-            return conn.getMetaData().getDatabaseProductName();
-        } catch (SQLException e) {
-            throw new DbException(e);
-        }
+        return db.executeMetaData(metaData -> metaData.getDatabaseProductName());
     }
 
-    public List<String> getTableList() {
+    public List<String> getTableList() throws SQLException {
         final List<String> nameList = new ArrayList<>(64);
-        try (Connection conn = db.getConnection()) {
-            DatabaseMetaData metaData = conn.getMetaData();
+        db.executeMetaData(metaData -> {
             try (ResultSet rs = metaData.getTables(null, null, null, new String[]{"TABLE"})) {
                 while (rs.next()) {
                     String name = rs.getString("TABLE_NAME");
                     nameList.add(name);
                 }
             }
-        }
+            return null;
+        });
         return nameList;
     }
 
     @Nullable
-    public DbTable getTable(String tableName) {
+    public DbTable getTable(String tableName) throws SQLException {
         List<DbColumn> columnList = new ArrayList<>(16);
-        try (Connection conn = db.getConnection()) {
-            DatabaseMetaData metaData = conn.getMetaData();
+        db.executeMetaData(metaData -> {
             try (ResultSet rs = metaData.getColumns(null, null, tableName.toUpperCase(), null)) {
                 while (rs.next()) {
                     DbColumn.Builder cb = new DbColumn.Builder();
                     cb.setName(rs.getString("COLUMN_NAME"));
                     cb.setTypeName(rs.getString("TYPE_NAME"));
                     cb.setTypeLength(rs.getInt("COLUMN_SIZE"));
-                    cb.setTypeScale(rs.getInt("DECIMAL_DIGITS"));
+                    cb.setTypePrecision(rs.getInt("DECIMAL_DIGITS"));
                     cb.setNullable(rs.getBoolean("NULLABLE"));
                     cb.setDefaultValue(rs.getObject("COLUMN_DEF").toString());
                     columnList.add(cb.build());
                 }
             }
-        }
+            return null;
+        });
 
         if (columnList.isEmpty()) {
             return null;
@@ -86,16 +78,15 @@ public final class Metadata {
         DbTable.Builder tb = new DbTable.Builder();
         tb.setName(tableName);
         tb.setColumns(columnList);
-        return table.build();
+        return tb.build();
     }
 
-    public boolean tableExist(String tableName) {
-        try (Connection conn = db.getConnection()) {
-            DatabaseMetaData metaData = conn.getMetaData();
+    public boolean tableExist(String tableName) throws SQLException {
+        return db.executeMetaData(metaData -> {
             try (ResultSet rs = metaData.getTables(null, null, tableName.toUpperCase(), new String[]{"TABLE"})) {
                 return rs.next();
             }
-        }
+        });
     }
 
 }

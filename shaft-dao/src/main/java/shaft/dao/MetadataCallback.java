@@ -19,12 +19,12 @@
  */
 package shaft.dao;
 
-import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 @FunctionalInterface
-public interface ConnectionCallback<T> {
+public interface MetadataCallback<T> {
 
-    T execute(Connection conn) throws SQLException;
+    T execute(DatabaseMetaData metadata) throws SQLException;
 
 }
