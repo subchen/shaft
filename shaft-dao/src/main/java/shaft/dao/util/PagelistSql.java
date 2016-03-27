@@ -61,6 +61,14 @@ public final class PagelistSql {
             }
         }
 
+        if ("PostgreSQL".equals(productName)) {
+            sql = sql + " limit " + limit;
+            if (offset > 0) {
+                sql = sql + " offset " + offset;
+            }
+            return sql;
+        }
+
         if ("Oracle".equals(productName)) {
             //@formatter:off
             sql = "select * from ("
@@ -73,16 +81,6 @@ public final class PagelistSql {
             }
             return sql;
         }
-
-
-        if ("H2".equals(productName)) {
-            sql = sql + " limit " + limit;
-            if (offset > 0) {
-                sql = sql + " offset " + offset;
-            }
-            return sql;
-        }
-
 
         if ("Microsoft SQL Server".equals(productName)) {
             if (offset == 0) {
@@ -107,6 +105,14 @@ public final class PagelistSql {
                         + "  select top " + (offset + limit) + " row_number() over(" + sorts + ") as row, * from (" + sql + ")"
                         + ") as temp where row > " + offset;
                 //@formatter:on
+            }
+            return sql;
+        }
+
+        if ("H2".equals(productName)) {
+            sql = sql + " limit " + limit;
+            if (offset > 0) {
+                sql = sql + " offset " + offset;
             }
             return sql;
         }
