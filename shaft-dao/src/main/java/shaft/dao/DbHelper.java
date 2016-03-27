@@ -31,7 +31,7 @@ import shaft.dao.metadata.Metadata;
 import shaft.dao.tx.JdbcNestedTransaction;
 import shaft.dao.tx.JdbcTransaction;
 import shaft.dao.tx.Transaction;
-import shaft.dao.util.DbUtils;
+import shaft.dao.util.PagelistSql;
 import shaft.dao.util.PreparedStatementCreator;
 
 import javax.sql.DataSource;
@@ -47,7 +47,6 @@ import java.util.Map;
 /**
  * 数据库操作。单例使用
  */
-@SuppressWarnings("unchecked")
 public final class DbHelper {
     public static final String KEY_TRANSACTION_NESTED_ENABLED = "shaft.dao.transaction.nested.disabled";
 
@@ -57,6 +56,7 @@ public final class DbHelper {
     private final ThreadLocal<JdbcTransaction> transactionHandler = new ThreadLocal<>();
     private final DataSource dataSource;
     private Metadata metaData;
+    private String productName;
 
     public DbHelper(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -73,11 +73,18 @@ public final class DbHelper {
         return metaData;
     }
 
+    public String getProductName() {
+        if (productName == null) {
+            productName = getMetadata().getDatabaseName();
+        }
+        return productName;
+    }
+
     /**
      * 启动一个事务
      */
     public Transaction transaction() {
-        transaction(Transaction.DEFAULT_ISOLATION_LEVEL);
+        return transaction(Transaction.DEFAULT_ISOLATION_LEVEL);
     }
 
     /**
@@ -124,7 +131,12 @@ public final class DbHelper {
     private void closeConnection(Connection conn) {
         if (transactionHandler.get() == null) {
             // not in transaction, close it
-            DbUtils.closeQuietly(conn);
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch(SQLException e) {
+                }
+            }
         }
     }
 
@@ -178,10 +190,12 @@ public final class DbHelper {
         return queryAsObject(Date.class, sql, parameters);
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> queryAsMap(String sql, Object... parameters) {
         return queryAsObject(Map.class, sql, parameters);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T[] queryAsArray(Class<T> arrayComponentClass, String sql, Object... parameters) {
         try {
             Class<T[]> clazz = (Class<T[]>) Class.forName("[" + arrayComponentClass.getName());
@@ -204,22 +218,22 @@ public final class DbHelper {
 
         PagelistImpl<T> pagelist = new PagelistImpl<T>(pageInfo);
         if (pageInfo.getTotalCount() < 0) {
-            String count_sql = DbUtils.get_sql_select_count(sql);
-            int count = queryAsInt(count_sql, parameters);
+            String countSQL = PagelistSql.getSelectCountSQL(sql);
+            int count = queryAsInt(countSQL, parameters);
             pagelist.setTotalCount(count);
         }
 
         List<T> items = Collections.emptyList();
         if (pagelist.getTotalCount() > 0) {
-            String page_sql = DbUtils.sql_pagelist(sql, pagelist.getFirstResult(), pagelist.getPageSize());
+            String pageSQL = PagelistSql.getSelectPageSQL(sql, pagelist.getFirstResult(), pagelist.getPageSize(), getProductName());
             PagelistHandler<T> rsh = new PagelistHandler<T>(rowMapper);
-            if (page_sql == null) {
+            if (pageSQL == null) {
                 // 如果不支持分页，那么使用原始的分页方法 ResultSet.absolute(first)
                 rsh.setFirstResult(pagelist.getFirstResult());
             } else {
                 // 使用数据库自身的分页SQL语句，将直接返回某一个
                 rsh.setFirstResult(0);
-                sql = page_sql;
+                sql = pageSQL;
             }
             rsh.setMaxResults(pagelist.getPageSize());
             items = query(rsh, sql, parameters);
@@ -234,68 +248,56 @@ public final class DbHelper {
         Validate.notNull(sql, "sql is null.");
 
         Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        T result = null;
-
         try {
             conn = getConnection();
-            ps = PreparedStatementCreator.createPreparedStatement(conn, sql, parameters);
-            rs = ps.executeQuery();
-            result = rsh.handle(rs);
+            try (PreparedStatement ps = PreparedStatementCreator.createPreparedStatement(conn, sql, parameters)){
+                try (ResultSet rs = ps.executeQuery()){
+                    return rsh.handle(rs);
+                }
+            }
         } catch (SQLException e) {
             throw new DbException(e).set("sql", sql).set("parameters", parameters);
         } finally {
-            DbUtils.closeQuietly(rs);
-            DbUtils.closeQuietly(ps);
             closeConnection(conn);
         }
-
-        return result;
     }
 
     public int executeUpdate(String sql, Object... parameters) {
         Validate.notNull(sql, "sql is null.");
 
         Connection conn = null;
-        PreparedStatement ps = null;
-        int rows = 0;
-
         try {
             conn = getConnection();
-            ps = PreparedStatementCreator.createPreparedStatement(conn, sql, parameters);
-            rows = ps.executeUpdate();
+            try (PreparedStatement ps = PreparedStatementCreator.createPreparedStatement(conn, sql, parameters)) {
+                return ps.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new DbException(e).set("sql", sql).set("parameters", parameters);
         } finally {
-            DbUtils.closeQuietly(ps);
             closeConnection(conn);
         }
-
-        return rows;
     }
 
     public int[] executeBatch(String sql, List<Object[]> parameters) {
         Validate.notNull(sql, "sql is null.");
 
         Connection conn = null;
-        PreparedStatement ps = null;
         int[] rows;
 
         try {
             conn = getConnection();
-            ps = conn.prepareStatement(sql);
-            for (Object[] parameter : parameters) {
-                for (int i = 0; i < parameter.length; i++) {
-                    ps.setObject(i + 1, parameter[i]);
+            try (PreparedStatement ps = conn.prepareStatement(sql)){
+                for (Object[] parameter : parameters) {
+                    for (int i = 0; i < parameter.length; i++) {
+                        ps.setObject(i + 1, parameter[i]);
+                    }
+                    ps.addBatch();
                 }
-                ps.addBatch();
+                rows = ps.executeBatch();
             }
-            rows = ps.executeBatch();
         } catch (SQLException e) {
             throw new DbException(e).set("sql", sql).set("parameters", parameters);
         } finally {
-            DbUtils.closeQuietly(ps);
             closeConnection(conn);
         }
 
@@ -359,6 +361,7 @@ public final class DbHelper {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> RowMapper<T> getRowMapper(Class<T> beanClass) {
         RowMapper<T> rowMapper;
         if (beanClass == Map.class) {

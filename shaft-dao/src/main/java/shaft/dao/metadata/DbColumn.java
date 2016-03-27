@@ -19,6 +19,8 @@
  */
 package shaft.dao.metadata;
 
+import jetbrick.util.builder.ToStringBuilder;
+
 public final class DbColumn {
     private String name;
     private String typeName;

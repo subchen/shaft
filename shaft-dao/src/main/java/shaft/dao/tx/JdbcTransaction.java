@@ -20,7 +20,6 @@
 package shaft.dao.tx;
 
 import shaft.dao.TransactionException;
-import shaft.dao.util.DbUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -98,7 +97,7 @@ public final class JdbcTransaction implements Transaction {
             }
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(defaultIsolationLevel);
-            DbUtils.closeQuietly(conn);
+            conn.close();
         } catch (SQLException e) {
             throw new TransactionException(e);
         } finally {

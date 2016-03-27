@@ -62,7 +62,7 @@ public final class DbTable {
         }
 
         public void setColumns(List<DbColumn> columns) {
-            obj.columns = Collections.unmodifiedList(columns);
+            obj.columns = Collections.unmodifiableList(columns);
         }
 
         public DbTable build() {
