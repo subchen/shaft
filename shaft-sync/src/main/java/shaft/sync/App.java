@@ -11,31 +11,21 @@ import java.util.List;
 
 public final class App {
     private final Logger log = LoggerFactory.getLogger(App.class);
+    private final Properties props = new Properties();
     private final List<UpgradeTask> tasks;
-    private final AuditLogger auditLog;
     private DataSource dataSource;
-    private String version;
 
     public App() {
-        tasks = new ArrayList<>(4);
-        auditLog = new AuditLogger();
-    }
+        // default config
+        props.setProperty(Features.APP_VERSION, "0.0.0");
+        props.setProperty(Features.COLUMN_UPDATE, "false");
+        props.setProperty(Features.COLUMN_DELETE, "true");
+        props.setProperty(Features.BULK_DELETE, "false");
 
-
-    public void addTask(UpgradeTask task) {
-        this.tasks.add(task);
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public AuditLogger getAuditLogger() {
-        return auditLog;
+        tasks = Arrays.asList(
+            new SchemaUpgradeTask(),
+            new BulkUpgradeTask()
+        );
     }
 
     public DataSource getDataSource() {
@@ -46,15 +36,23 @@ public final class App {
         this.dataSource = dataSource;
     }
 
+    public void setProperty(String name, String value) {
+        props.setProperty(name, value);
+    }
+
+    public String getProperty(String name) {
+        return props.getProperty(name);
+    }
+    
     public void execute() {
-        log.info("DBUPS App starting ...");
+        log.info("shaft-sync starting ...");
         try (auditLog) {
             for (UpgradeTask task : tasks) {
                 task.init(this);
                 task.execute();
             }
         }
-        log.info("DBUPS App completed.");
+        log.info("shaft-sync completed.");
     }
 
     public static void main(String args[]) {
@@ -64,14 +62,8 @@ public final class App {
         ds.setPassword(System.getProperty("ds.password"));
         ds.setDriverClassName(System.getProperty("ds.driverClassName"));
 
-        SchemaUpgradeTask schemaUpgradeTask = new SchemaUpgradeTask();
-        //schemaUpgradeTask.addSchemaHook(new AuditLogSchemaHook());
-
         App app = new App();
-        app.setVersion("1.0.0");
         app.setDataSource(ds);
-        app.addTask(schemaUpgradeTask);
-        //app.addTask(new BulkUpgradeTask());
         app.execute();
     }
 
