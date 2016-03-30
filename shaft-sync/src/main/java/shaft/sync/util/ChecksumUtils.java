@@ -8,10 +8,10 @@ import shaft.dao.metadata.DbTable;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-public final class ChecksumUtils {
-    private static final Map<Object, String> cache = new IdentityHashMap<>(128);
+public final class Checksum {
+    private final Map<Object, String> cache = new IdentityHashMap<>(128);
 
-    public static String compute(DbTable table) {
+    public String compute(DbTable table) {
         String checksum = cache.get(table);
         if (checksum == null) {
             StringBuilder sb = new StringBuilder(128);
@@ -30,7 +30,7 @@ public final class ChecksumUtils {
         return checksum;
     }
 
-    public static boolean equals(DbColumn c1, DbColumn c2) {
+    public boolean equalsCompare(DbColumn c1, DbColumn c2) {
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(c1.getName(), c2.getName());
         builder.append(c1.getTypeName(), c2.getTypeName());

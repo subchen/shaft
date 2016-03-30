@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Metadata {
+public final class DbMetadata {
     private final DbHelper db;
 
     public Metadata(DbHelper db) {

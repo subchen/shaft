@@ -55,7 +55,7 @@ public final class DbHelper {
     // 当前线程(事务)
     private final ThreadLocal<JdbcTransaction> transactionHandler = new ThreadLocal<>();
     private final DataSource dataSource;
-    private Metadata metaData;
+    private DbMetadata metaData;
     private String productName;
 
     public DbHelper(DataSource dataSource) {
@@ -66,9 +66,9 @@ public final class DbHelper {
         return dataSource;
     }
 
-    public Metadata getMetadata() {
+    public DbMetadata getMetadata() {
         if (metaData == null) {
-            metaData = new Metadata(this);
+            metaData = new DbMetadata(this);
         }
         return metaData;
     }
