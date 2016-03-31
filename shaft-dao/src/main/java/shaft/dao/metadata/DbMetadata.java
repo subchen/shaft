@@ -30,7 +30,7 @@ import java.util.List;
 public final class DbMetadata {
     private final DbHelper db;
 
-    public Metadata(DbHelper db) {
+    public DbMetadata(DbHelper db) {
         this.db = db;
     }
 

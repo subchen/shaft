@@ -27,7 +27,7 @@ import shaft.dao.mapper.ArrayRowMapper;
 import shaft.dao.mapper.BeanRowMapper;
 import shaft.dao.mapper.MapRowMapper;
 import shaft.dao.mapper.SingleColumnRowMapper;
-import shaft.dao.metadata.Metadata;
+import shaft.dao.metadata.DbMetadata;
 import shaft.dao.tx.JdbcNestedTransaction;
 import shaft.dao.tx.JdbcTransaction;
 import shaft.dao.tx.Transaction;
