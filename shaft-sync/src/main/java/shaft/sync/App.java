@@ -1,6 +1,6 @@
 package shaft.sync;
 
-import shaft.sync.jdbc.DriverManagerDataSource;
+import shaft.dao.ds.DriverManagerDataSource;
 import shaft.sync.task.schema.SchemaUpgradeTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ public final class App {
 
     public App() {
         // default config
-        props.setProperty(Features.APP_VERSION, "0.0.0");
         props.setProperty(Features.COLUMN_UPDATE, "false");
         props.setProperty(Features.COLUMN_DELETE, "true");
         props.setProperty(Features.BULK_DELETE, "false");
@@ -63,7 +62,9 @@ public final class App {
         ds.setDriverClassName(System.getProperty("ds.driverClassName"));
 
         App app = new App();
+        app.setProperty(Features.APP_VERSION, "1.0.0");
         app.setDataSource(ds);
+        //app.addSchemaHook(new SchemaHook_1_1());
         app.execute();
     }
 
