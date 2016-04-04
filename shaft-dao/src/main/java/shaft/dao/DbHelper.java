@@ -20,6 +20,10 @@
 package shaft.dao;
 
 import jetbrick.util.Validate;
+import shaft.dao.cb.ConnectionCallback;
+import shaft.dao.cb.MetadataCallback;
+import shaft.dao.cb.PreparedStatementCallback;
+import shaft.dao.cb.ResultSetCallback;
 import shaft.dao.handler.PagelistHandler;
 import shaft.dao.handler.RowListHandler;
 import shaft.dao.handler.SingleRowHandler;
