@@ -1,8 +1,8 @@
 package shaft.sync.task.schema.model;
 
-import jetbrick.util.builder.ToStringBuilder;
-
 import java.sql.Timestamp;
+
+import jetbrick.util.builder.ToStringBuilder;
 
 public final class SchemaChecksum {
     private String name;

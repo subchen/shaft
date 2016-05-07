@@ -19,14 +19,14 @@
  */
 package shaft.dao.handler;
 
-import shaft.dao.ResultSetHandler;
-import shaft.dao.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import shaft.dao.ResultSetHandler;
+import shaft.dao.RowMapper;
 
 public final class PagelistHandler<T> implements ResultSetHandler<List<T>> {
 

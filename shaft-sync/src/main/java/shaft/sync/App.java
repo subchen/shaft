@@ -1,19 +1,22 @@
 package shaft.sync;
 
-import shaft.sync.jdbc.DriverManagerDataSource;
-import shaft.sync.task.schema.SchemaUpgradeTask;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import shaft.dao.DbHelper;
+import shaft.dao.ds.DriverManagerDataSource;
+import shaft.sync.task.bulk.BulkUpgradeTask;
+import shaft.sync.task.schema.SchemaUpgradeTask;
 
 public final class App {
     private final Logger log = LoggerFactory.getLogger(App.class);
     private final Properties props = new Properties();
     private final List<UpgradeTask> tasks;
-    private DataSource dataSource;
+    private DbHelper dao;
 
     public App() {
         // default config
@@ -28,12 +31,12 @@ public final class App {
         );
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
+    public DbHelper getDbHelper() {
+        return dao;
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setDbHelper(DbHelper dao) {
+        this.dao = dao;
     }
 
     public void setProperty(String name, String value) {
@@ -46,11 +49,9 @@ public final class App {
     
     public void execute() {
         log.info("shaft-sync starting ...");
-        try (auditLog) {
-            for (UpgradeTask task : tasks) {
-                task.init(this);
-                task.execute();
-            }
+        for (UpgradeTask task : tasks) {
+            task.init(this);
+            task.execute();
         }
         log.info("shaft-sync completed.");
     }
@@ -63,7 +64,9 @@ public final class App {
         ds.setDriverClassName(System.getProperty("ds.driverClassName"));
 
         App app = new App();
-        app.setDataSource(ds);
+        app.setProperty(Features.APP_VERSION, "1.0.0");
+        app.setDbHelper(new DbHelper(ds));
+        //app.addSchemaHook(new SchemaHook_1_1());
         app.execute();
     }
 

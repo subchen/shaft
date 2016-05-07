@@ -19,13 +19,13 @@
  */
 package shaft.dao.mapper;
 
-import jetbrick.collection.CaseInsensitiveHashMap;
-import shaft.dao.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Map;
+
+import jetbrick.collection.CaseInsensitiveHashMap;
+import shaft.dao.RowMapper;
 
 public final class MapRowMapper implements RowMapper<Map<String, Object>> {
 

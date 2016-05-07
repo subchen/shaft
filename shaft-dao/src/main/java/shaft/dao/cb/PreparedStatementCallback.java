@@ -17,14 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package shaft.dao;
+package shaft.dao.cb;
 
-import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @FunctionalInterface
-public interface MetadataCallback<T> {
+public interface PreparedStatementCallback {
 
-    T execute(DatabaseMetaData metadata) throws SQLException;
+    void setParameters(PreparedStatement ps) throws SQLException;
 
 }

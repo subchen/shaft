@@ -19,12 +19,12 @@
  */
 package shaft.dao;
 
-import jetbrick.util.JSONUtils;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jetbrick.util.JSONUtils;
 
 public final class PagelistImpl<T> implements Pagelist<T> {
     private final int pageNo;

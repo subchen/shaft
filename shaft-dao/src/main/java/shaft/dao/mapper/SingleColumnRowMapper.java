@@ -19,11 +19,11 @@
  */
 package shaft.dao.mapper;
 
-import jetbrick.typecast.TypeCastUtils;
-import shaft.dao.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import jetbrick.typecast.TypeCastUtils;
+import shaft.dao.RowMapper;
 
 public final class SingleColumnRowMapper<T> implements RowMapper<T> {
 

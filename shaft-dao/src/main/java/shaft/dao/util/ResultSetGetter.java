@@ -19,10 +19,10 @@
  */
 package shaft.dao.util;
 
-import jetbrick.util.ClassUtils;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import jetbrick.util.ClassUtils;
 
 public class ResultSetGetter {
 

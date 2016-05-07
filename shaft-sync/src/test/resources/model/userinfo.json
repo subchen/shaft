@@ -1,0 +1,31 @@
+{
+    "name": "user_info",
+    "class": "shaft.sample.model.UserInfo",
+    "columns": [
+        {
+            "name": "id",
+            "type": "uuid"
+        },
+        {
+            "name": "email",
+            "type": "varchar(50)"
+            "annotations": [
+                "@Validate(EMAIL)"
+            ]
+        },
+        {
+            "name": "name",
+            "type": "varchar(20)"
+        },
+        {
+            "name": "status",
+            "type": "enum",
+            "enum": ["normal", "locked", "deleted"]
+        },
+        {
+            "name": "desc",
+            "type": "varchar(250)",
+            "required": false
+        }
+    ]
+}

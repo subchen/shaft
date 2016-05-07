@@ -1,12 +1,12 @@
 package shaft.sync.task.schema;
 
-import shaft.dao.DbHelper;
-import shaft.sync.task.schema.model.SchemaChecksum;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import shaft.dao.DbHelper;
+import shaft.sync.task.schema.model.SchemaChecksum;
 
 public final class SchemaChecksumDao {
     private final DbHelper dao;

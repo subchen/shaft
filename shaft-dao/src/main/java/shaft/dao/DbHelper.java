@@ -1,16 +1,16 @@
 /**
  * Copyright 2016 Guoqiang Chen, Shanghai, China. All rights reserved.
- *
- *   Author: Guoqiang Chen
- *    Email: subchen@gmail.com
- *   WebURL: https://github.com/subchen
- *
+ * <p>
+ * Author: Guoqiang Chen
+ * Email: subchen@gmail.com
+ * WebURL: https://github.com/subchen
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,22 @@
  */
 package shaft.dao;
 
-import jetbrick.util.Validate;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import javax.sql.DataSource;
+
+import shaft.dao.cb.ConnectionCallback;
+import shaft.dao.cb.MetadataCallback;
+import shaft.dao.cb.PreparedStatementCallback;
+import shaft.dao.cb.ResultSetCallback;
+import shaft.dao.dialect.Dialect;
 import shaft.dao.handler.PagelistHandler;
 import shaft.dao.handler.RowListHandler;
 import shaft.dao.handler.SingleRowHandler;
@@ -34,16 +49,6 @@ import shaft.dao.tx.Transaction;
 import shaft.dao.util.PagelistSql;
 import shaft.dao.util.PreparedStatementCreator;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 /**
  * 数据库操作。单例使用
  */
@@ -56,7 +61,7 @@ public final class DbHelper {
     private final ThreadLocal<JdbcTransaction> transactionHandler = new ThreadLocal<>();
     private final DataSource dataSource;
     private DbMetadata metaData;
-    private String productName;
+    private Dialect dialect;
 
     public DbHelper(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -73,11 +78,11 @@ public final class DbHelper {
         return metaData;
     }
 
-    public String getProductName() {
-        if (productName == null) {
-            productName = getMetadata().getDatabaseName();
+    public Dialect getDialect() {
+        if (dialect == null) {
+            dialect = Dialect.create(getMetadata().getDatabaseName());
         }
-        return productName;
+        return dialect;
     }
 
     /**
@@ -134,23 +139,19 @@ public final class DbHelper {
             if (conn != null) {
                 try {
                     conn.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                 }
             }
         }
     }
 
     public <T> List<T> queryAsList(RowMapper<T> rowMapper, String sql, Object... parameters) {
-        Validate.notNull(rowMapper, "rowMapper is null.");
-
-        ResultSetHandler<List<T>> rsh = new RowListHandler<T>(rowMapper);
+        ResultSetHandler<List<T>> rsh = new RowListHandler<T>(Objects.requireNonNull(rowMapper));
         return query(rsh, sql, parameters);
     }
 
     public <T> List<T> queryAsList(Class<T> beanClass, String sql, Object... parameters) {
-        Validate.notNull(beanClass, "beanClass is null.");
-
-        RowMapper<T> rowMapper = getRowMapper(beanClass);
+        RowMapper<T> rowMapper = getRowMapper(Objects.requireNonNull(beanClass));
         return queryAsList(rowMapper, sql, parameters);
     }
 
@@ -160,9 +161,7 @@ public final class DbHelper {
     }
 
     public <T> T queryAsObject(Class<T> beanClass, String sql, Object... parameters) {
-        Validate.notNull(beanClass, "beanClass is null.");
-
-        RowMapper<T> rowMapper = getRowMapper(beanClass);
+        RowMapper<T> rowMapper = getRowMapper(Objects.requireNonNull(beanClass));
         return queryAsObject(rowMapper, sql, parameters);
     }
 
@@ -206,17 +205,12 @@ public final class DbHelper {
     }
 
     public <T> Pagelist<T> queryAsPagelist(PageInfo pageInfo, Class<T> beanClass, String sql, Object... parameters) {
-        Validate.notNull(beanClass, "beanClass is null.");
-
-        RowMapper<T> rowMapper = getRowMapper(beanClass);
+        RowMapper<T> rowMapper = getRowMapper(Objects.requireNonNull(beanClass));
         return queryAsPagelist(pageInfo, rowMapper, sql, parameters);
     }
 
     public <T> Pagelist<T> queryAsPagelist(PageInfo pageInfo, RowMapper<T> rowMapper, String sql, Object... parameters) {
-        Validate.notNull(pageInfo, "pageInfo is null.");
-        Validate.notNull(rowMapper, "rowMapper is null.");
-
-        PagelistImpl<T> pagelist = new PagelistImpl<T>(pageInfo);
+        PagelistImpl<T> pagelist = new PagelistImpl<T>(Objects.requireNonNull(pageInfo));
         if (pageInfo.getTotalCount() < 0) {
             String countSQL = PagelistSql.getSelectCountSQL(sql);
             int count = queryAsInt(countSQL, parameters);
@@ -225,8 +219,8 @@ public final class DbHelper {
 
         List<T> items = Collections.emptyList();
         if (pagelist.getTotalCount() > 0) {
-            String pageSQL = PagelistSql.getSelectPageSQL(sql, pagelist.getFirstResult(), pagelist.getPageSize(), getProductName());
-            PagelistHandler<T> rsh = new PagelistHandler<T>(rowMapper);
+            String pageSQL = getDialect().getPaginationSQL(sql, pagelist.getFirstResult(), pagelist.getPageSize());
+            PagelistHandler<T> rsh = new PagelistHandler<T>(Objects.requireNonNull(rowMapper));
             if (pageSQL == null) {
                 // 如果不支持分页，那么使用原始的分页方法 ResultSet.absolute(first)
                 rsh.setFirstResult(pagelist.getFirstResult());
@@ -244,15 +238,12 @@ public final class DbHelper {
     }
 
     public <T> T query(ResultSetHandler<T> rsh, String sql, Object... parameters) {
-        Validate.notNull(rsh, "rsh is null.");
-        Validate.notNull(sql, "sql is null.");
-
         Connection conn = null;
         try {
             conn = getConnection();
-            try (PreparedStatement ps = PreparedStatementCreator.createPreparedStatement(conn, sql, parameters)){
-                try (ResultSet rs = ps.executeQuery()){
-                    return rsh.handle(rs);
+            try (PreparedStatement ps = PreparedStatementCreator.createPreparedStatement(conn, Objects.requireNonNull(sql), parameters)) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    return Objects.requireNonNull(rsh).handle(rs);
                 }
             }
         } catch (SQLException e) {
@@ -263,12 +254,10 @@ public final class DbHelper {
     }
 
     public int executeUpdate(String sql, Object... parameters) {
-        Validate.notNull(sql, "sql is null.");
-
         Connection conn = null;
         try {
             conn = getConnection();
-            try (PreparedStatement ps = PreparedStatementCreator.createPreparedStatement(conn, sql, parameters)) {
+            try (PreparedStatement ps = PreparedStatementCreator.createPreparedStatement(conn, Objects.requireNonNull(sql), parameters)) {
                 return ps.executeUpdate();
             }
         } catch (SQLException e) {
@@ -279,14 +268,12 @@ public final class DbHelper {
     }
 
     public int[] executeBatch(String sql, List<Object[]> parameters) {
-        Validate.notNull(sql, "sql is null.");
-
         Connection conn = null;
         int[] rows;
 
         try {
             conn = getConnection();
-            try (PreparedStatement ps = conn.prepareStatement(sql)){
+            try (PreparedStatement ps = conn.prepareStatement(Objects.requireNonNull(sql))) {
                 for (Object[] parameter : parameters) {
                     for (int i = 0; i < parameter.length; i++) {
                         ps.setObject(i + 1, parameter[i]);

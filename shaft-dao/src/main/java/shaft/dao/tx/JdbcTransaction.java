@@ -19,10 +19,10 @@
  */
 package shaft.dao.tx;
 
-import shaft.dao.TransactionException;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import shaft.dao.TransactionException;
 
 /**
  * Jdbc 事务对象

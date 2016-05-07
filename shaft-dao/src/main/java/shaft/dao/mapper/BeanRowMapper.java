@@ -19,15 +19,15 @@
  */
 package shaft.dao.mapper;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 import jetbrick.bean.KlassInfo;
 import jetbrick.bean.PropertyInfo;
 import jetbrick.typecast.TypeCastUtils;
 import jetbrick.util.IdentifiedNameUtils;
 import shaft.dao.RowMapper;
-
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 public final class BeanRowMapper<T> implements RowMapper<T> {
     private KlassInfo klass;

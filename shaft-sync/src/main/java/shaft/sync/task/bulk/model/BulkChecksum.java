@@ -1,8 +1,8 @@
 package shaft.sync.task.bulk.model;
 
-import jetbrick.util.builder.ToStringBuilder;
-
 import java.util.Date;
+
+import jetbrick.util.builder.ToStringBuilder;
 
 public final class BulkChecksum {
     private String name;

@@ -19,13 +19,13 @@
  */
 package shaft.dao.metadata;
 
-import shaft.dao.DbHelper;
-
-import javax.annotation.Nullable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
+
+import shaft.dao.DbHelper;
 
 public final class DbMetadata {
     private final DbHelper db;

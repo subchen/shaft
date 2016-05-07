@@ -19,8 +19,8 @@
  */
 package shaft.dao.util;
 
-import javax.annotation.Nullable;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 
 public final class PagelistSql {
 

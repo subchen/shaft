@@ -1,9 +1,9 @@
 package shaft.sync.task.schema;
 
-import shaft.dao.metadata.DbTable;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import shaft.dao.metadata.DbTable;
 
 public final class DelegateSchemaHook implements SchemaHook {
     private final List<SchemaHook> hookList = new ArrayList<>(8);

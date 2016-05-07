@@ -19,11 +19,11 @@
  */
 package shaft.dao.handler;
 
-import shaft.dao.ResultSetHandler;
-import shaft.dao.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import shaft.dao.ResultSetHandler;
+import shaft.dao.RowMapper;
 
 public final class SingleRowHandler<T> implements ResultSetHandler<T> {
 

@@ -19,12 +19,12 @@
  */
 package shaft.dao.ds;
 
-import jetbrick.util.ClassLoaderUtils;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import jetbrick.util.ClassLoaderUtils;
 
 public final class DriverManagerDataSource extends AbstractDataSource {
     private String url;

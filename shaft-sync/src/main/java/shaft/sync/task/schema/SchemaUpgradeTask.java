@@ -1,18 +1,24 @@
 package shaft.sync.task.schema;
 
-import jetbrick.util.StringUtils;
-import jetbrick.util.builder.EqualsBuilder;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jetbrick.util.StringUtils;
 import shaft.dao.metadata.DbColumn;
 import shaft.dao.metadata.DbTable;
 import shaft.sync.App;
 import shaft.sync.UpgradeTask;
 import shaft.sync.task.schema.model.SchemaChecksum;
+import shaft.sync.util.Checksum;
 import shaft.sync.util.ChecksumUtils;
-
-import java.sql.Timestamp;
-import java.util.*;
 
 /**
  * 数据库表结构的自动升降级
@@ -30,6 +36,8 @@ public final class SchemaUpgradeTask extends UpgradeTask {
     private int sumAdded = 0;
     private int sumUpdated = 0;
     private int sumDeleted = 0;
+
+    private Checksum checksum = new Checksum();
 
     public SchemaUpgradeTask() {
     }
@@ -205,19 +213,15 @@ public final class SchemaUpgradeTask extends UpgradeTask {
     private boolean isColumnChanged(DbColumn sc, DbColumn dc) {
         String column_type = dialect.asSqlType(sc.getTypeName(), sc.getTypeLength(), sc.getTypeScale());
 
-        EqualsBuilder builder = new EqualsBuilder();
-        builder.append(sc.getName().toUpperCase(), dc.getName().toUpperCase());
-        builder.append(column_type.toUpperCase(), dc.asSqlType().toUpperCase());
-        builder.append(sc.isNullable(), dc.isNullable());
-        boolean changed = !builder.isEquals();
-
-        if (changed) {
-            String message = "changed column: " + sc.getName();
-            message += ", type: " + dc.asSqlType().toUpperCase() + " -> " + column_type;
-            message += ", nullable: " + dc.isNullable() + " -> " + sc.isNullable();
-            log.warn(message);
+        if (checksum.isEqual(sc, dc)) {
+            return false;
         }
-        return changed;
+
+        String message = "changed column: " + sc.getName();
+        message += ", type: " + dc.asSqlType().toUpperCase() + " -> " + column_type;
+        message += ", nullable: " + dc.isNullable() + " -> " + sc.isNullable();
+        log.warn(message);
+        return true;
     }
 
 }

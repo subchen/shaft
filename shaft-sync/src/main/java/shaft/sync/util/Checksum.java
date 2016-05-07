@@ -1,12 +1,12 @@
 package shaft.sync.util;
 
+import java.util.IdentityHashMap;
+import java.util.Map;
+
 import jetbrick.util.builder.EqualsBuilder;
 import jetbrick.util.codec.MD5Utils;
 import shaft.dao.metadata.DbColumn;
 import shaft.dao.metadata.DbTable;
-
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 public final class Checksum {
     private final Map<Object, String> cache = new IdentityHashMap<>(128);
@@ -30,7 +30,7 @@ public final class Checksum {
         return checksum;
     }
 
-    public boolean equalsCompare(DbColumn c1, DbColumn c2) {
+    public boolean isEqual(DbColumn c1, DbColumn c2) {
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(c1.getName(), c2.getName());
         builder.append(c1.getTypeName(), c2.getTypeName());

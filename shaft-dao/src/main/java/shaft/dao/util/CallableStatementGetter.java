@@ -19,10 +19,10 @@
  */
 package shaft.dao.util;
 
-import jetbrick.util.ClassUtils;
-
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+
+import jetbrick.util.ClassUtils;
 
 public final class CallableStatementGetter {
 

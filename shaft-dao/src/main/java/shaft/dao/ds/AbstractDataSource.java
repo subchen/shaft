@@ -19,10 +19,10 @@
  */
 package shaft.dao.ds;
 
-import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
 
 public abstract class AbstractDataSource implements DataSource {
 

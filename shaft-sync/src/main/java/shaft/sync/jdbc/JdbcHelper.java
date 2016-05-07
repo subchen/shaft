@@ -5,10 +5,10 @@ import shaft.dao.metadata.DbColumn;
 import shaft.dao.metadata.DbTable;
 
 public final class JdbcHelper {
-    private final DbHelper  dao;
+    private final DbHelper dao;
 
     public JdbcHelper(DbHelper dao) {
-        this.dao     = dao;
+        this.dao = dao;
     }
 
     public void tableCreate(DbTable table) {

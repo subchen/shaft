@@ -19,17 +19,21 @@
  */
 package shaft.dao.util;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import jetbrick.bean.BeanMap;
 import jetbrick.collection.iterator.ArrayIterator;
 import jetbrick.util.ClassUtils;
 import jetbrick.util.StringUtils;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class PreparedStatementCreator {
     private static final Pattern namedParameterPattern = Pattern.compile("\\:([a-zA-Z0-9_]+)");

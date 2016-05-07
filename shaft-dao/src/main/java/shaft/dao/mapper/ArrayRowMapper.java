@@ -19,10 +19,10 @@
  */
 package shaft.dao.mapper;
 
-import shaft.dao.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import shaft.dao.RowMapper;
 
 public final class ArrayRowMapper implements RowMapper<Object[]> {
 

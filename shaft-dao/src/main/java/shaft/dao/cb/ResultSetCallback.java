@@ -17,14 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package shaft.dao;
+package shaft.dao.cb;
 
-import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @FunctionalInterface
-public interface ConnectionCallback<T> {
+public interface ResultSetCallback<T> {
 
-    T execute(Connection conn) throws SQLException;
+    T execute(ResultSet rs) throws SQLException;
 
 }
