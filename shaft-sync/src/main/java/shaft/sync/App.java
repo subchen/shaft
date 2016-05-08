@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import shaft.dao.ds.DriverManagerDataSource;
-import shaft.sync.task.schema.SchemaUpgradeTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
