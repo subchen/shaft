@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.sql.DataSource;
 
+import jetbrick.util.Validate;
 import shaft.dao.cb.ConnectionCallback;
 import shaft.dao.cb.MetadataCallback;
 import shaft.dao.cb.PreparedStatementCallback;

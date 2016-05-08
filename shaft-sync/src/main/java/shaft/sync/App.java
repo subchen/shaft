@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import shaft.dao.ds.DriverManagerDataSource;
+import shaft.sync.task.schema.SchemaUpgradeTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,6 @@ public final class App {
 
     public App() {
         // default config
-        props.setProperty(Features.APP_VERSION, "0.0.0");
         props.setProperty(Features.COLUMN_UPDATE, "false");
         props.setProperty(Features.COLUMN_DELETE, "true");
         props.setProperty(Features.BULK_DELETE, "false");
@@ -46,7 +47,7 @@ public final class App {
     public String getProperty(String name) {
         return props.getProperty(name);
     }
-    
+ 
     public void execute() {
         log.info("shaft-sync starting ...");
         for (UpgradeTask task : tasks) {
