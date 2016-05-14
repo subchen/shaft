@@ -49,7 +49,7 @@ public final class PagelistSql {
      * @param offset      分页开始记录（从 0 开始, 等价于 (pageNo-1)*pageSize）
      * @param limit       返回数量
      * @param productName 数据库名称(来自于 DatabaseMetaData.getDatabaseProductName())
-     * @return  null if not supported
+     * @return null if not supported
      */
     @Nullable
     public static String getSelectPageSQL(String sql, int offset, int limit, String productName) {
