@@ -10,6 +10,9 @@ public abstract class Dialect {
         if (MysqlDialect.PRODUCT_NAME.equals(name)) {
             return new MysqlDialect();
         }
+        if (H2Dialect.PRODUCT_NAME.equals(name)) {
+            return new H2Dialect();
+        }
 
         throw new IllegalArgumentException("Unsupported database " + name);
     }
