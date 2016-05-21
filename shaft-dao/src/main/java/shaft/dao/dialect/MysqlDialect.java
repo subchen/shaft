@@ -3,8 +3,8 @@ package shaft.dao.dialect;
 import jetbrick.util.StringUtils;
 
 public final class MysqlDialect extends Dialect {
-
     public static final String PRODUCT_NAME = "MySQL";
+    public static final MysqlDialect INSTANCE = new MysqlDialect();
 
     @Override
     public String getProductName() {

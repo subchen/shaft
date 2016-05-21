@@ -3,8 +3,8 @@ package shaft.dao.dialect;
 import jetbrick.util.StringUtils;
 
 public final class H2Dialect extends Dialect {
-
     public static final String PRODUCT_NAME = "H2";
+    public static final H2Dialect INSTANCE = new H2Dialect();
 
     @Override
     public String getProductName() {

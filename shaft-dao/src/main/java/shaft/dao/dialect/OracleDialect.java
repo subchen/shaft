@@ -3,8 +3,8 @@ package shaft.dao.dialect;
 import jetbrick.util.StringUtils;
 
 public final class OracleDialect extends Dialect {
-
     public static final String PRODUCT_NAME = "Oracle";
+    public static final OracleDialect INSTANCE = new OracleDialect();
 
     @Override
     public String getProductName() {

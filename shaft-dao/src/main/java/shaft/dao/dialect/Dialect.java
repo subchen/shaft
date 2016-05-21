@@ -1,33 +1,32 @@
 package shaft.dao.dialect;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
 public abstract class Dialect {
-    private static final Map<String, Dialect> dialectMap = new HashMap<>();
     private static final Set<String> isoReservedWords = new HashSet<>(512);
     protected final Set<String> reservedWords = new HashSet<>(256);
 
     static {
         initReservedWordsSql92();
         initReservedWordsSql99();
-
-        dialectMap.put(MysqlDialect.PRODUCT_NAME, new MysqlDialect());
-        dialectMap.put(H2Dialect.PRODUCT_NAME, new H2Dialect());
-        dialectMap.put(PostgreSqlDialect.PRODUCT_NAME, new PostgreSqlDialect());
-        dialectMap.put(OracleDialect.PRODUCT_NAME, new OracleDialect());
-        dialectMap.put(SQLServerDialect.PRODUCT_NAME, new SQLServerDialect());
     }
 
     public static Dialect create(String name) throws IllegalArgumentException {
-        Dialect dialect = dialectMap.get(name);
-        if (dialect == null) {
+        if (MysqlDialect.PRODUCT_NAME.equals(name)) {
+            return MysqlDialect.INSTANCE;
+        } else if (H2Dialect.PRODUCT_NAME.equals(name)) {
+            return H2Dialect.INSTANCE;
+        } else if (PostgreSqlDialect.PRODUCT_NAME.equals(name)) {
+            return PostgreSqlDialect.INSTANCE;
+        } else if (OracleDialect.PRODUCT_NAME.equals(name)) {
+            return OracleDialect.INSTANCE;
+        } else if (SQLServerDialect.PRODUCT_NAME.equals(name)) {
+            return SQLServerDialect.INSTANCE;
+        } else {
             throw new IllegalArgumentException("Unsupported database " + name);
         }
-        return dialect;
     }
 
     public Dialect() {

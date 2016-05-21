@@ -3,8 +3,8 @@ package shaft.dao.dialect;
 import jetbrick.util.StringUtils;
 
 public final class SQLServerDialect extends Dialect {
-
     public static final String PRODUCT_NAME = "Microsoft SQL Server";
+    public static final SQLServerDialect INSTANCE = new SQLServerDialect();
 
     @Override
     public String getProductName() {

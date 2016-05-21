@@ -3,8 +3,8 @@ package shaft.dao.dialect;
 import jetbrick.util.StringUtils;
 
 public final class PostgreSqlDialect extends Dialect {
-
     public static final String PRODUCT_NAME = "PostgreSQL";
+    public static final PostgreSqlDialect INSTANCE = new PostgreSqlDialect();
 
     @Override
     public String getProductName() {
