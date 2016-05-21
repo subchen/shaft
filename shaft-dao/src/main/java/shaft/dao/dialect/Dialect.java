@@ -16,17 +16,20 @@ public abstract class Dialect {
     public static Dialect create(String name) throws IllegalArgumentException {
         if (MysqlDialect.PRODUCT_NAME.equals(name)) {
             return MysqlDialect.INSTANCE;
-        } else if (H2Dialect.PRODUCT_NAME.equals(name)) {
-            return H2Dialect.INSTANCE;
-        } else if (PostgreSqlDialect.PRODUCT_NAME.equals(name)) {
-            return PostgreSqlDialect.INSTANCE;
-        } else if (OracleDialect.PRODUCT_NAME.equals(name)) {
-            return OracleDialect.INSTANCE;
-        } else if (SQLServerDialect.PRODUCT_NAME.equals(name)) {
-            return SQLServerDialect.INSTANCE;
-        } else {
-            throw new IllegalArgumentException("Unsupported database " + name);
         }
+        if (H2Dialect.PRODUCT_NAME.equals(name)) {
+            return H2Dialect.INSTANCE;
+        }
+        if (PostgreSqlDialect.PRODUCT_NAME.equals(name)) {
+            return PostgreSqlDialect.INSTANCE;
+        }
+        if (OracleDialect.PRODUCT_NAME.equals(name)) {
+            return OracleDialect.INSTANCE;
+        }
+        if (SQLServerDialect.PRODUCT_NAME.equals(name)) {
+            return SQLServerDialect.INSTANCE;
+        }
+        throw new IllegalArgumentException("Unsupported database " + name);
     }
 
     public Dialect() {
