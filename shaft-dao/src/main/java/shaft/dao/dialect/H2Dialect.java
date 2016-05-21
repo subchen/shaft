@@ -7,7 +7,7 @@ public final class H2Dialect extends Dialect {
     public static final String PRODUCT_NAME = "H2";
 
     @Override
-    public String getName() {
+    public String getProductName() {
         return PRODUCT_NAME;
     }
 

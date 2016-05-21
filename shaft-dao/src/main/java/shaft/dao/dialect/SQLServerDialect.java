@@ -7,7 +7,7 @@ public final class SQLServerDialect extends Dialect {
     public static final String PRODUCT_NAME = "Microsoft SQL Server";
 
     @Override
-    public String getName() {
+    public String getProductName() {
         return PRODUCT_NAME;
     }
 

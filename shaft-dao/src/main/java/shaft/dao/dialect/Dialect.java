@@ -37,7 +37,7 @@ public abstract class Dialect {
     /**
      * 返回 DatabaseMetadata.getProductName()
      */
-    public abstract String getName();
+    public abstract String getProductName();
 
     /**
      * 数据库是否支持 Sequence
@@ -76,7 +76,7 @@ public abstract class Dialect {
      * 哪些数据库字段运行指定精度.
      * @param type 具体的数据库字段类型
      */
-    public boolean supportsColumnScale(String type) {
+    public boolean supportsColumnPrecision(String type) {
         Set<String> columnSet = new HashSet<>();
         columnSet.add("number");
         columnSet.add("numeric");

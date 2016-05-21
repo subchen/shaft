@@ -7,7 +7,7 @@ public final class OracleDialect extends Dialect {
     public static final String PRODUCT_NAME = "Oracle";
 
     @Override
-    public String getName() {
+    public String getProductName() {
         return PRODUCT_NAME;
     }
 

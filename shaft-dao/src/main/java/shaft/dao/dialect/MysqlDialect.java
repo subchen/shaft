@@ -7,7 +7,7 @@ public final class MysqlDialect extends Dialect {
     public static final String PRODUCT_NAME = "MySQL";
 
     @Override
-    public String getName() {
+    public String getProductName() {
         return PRODUCT_NAME;
     }
 

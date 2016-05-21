@@ -7,7 +7,7 @@ public final class PostgreSqlDialect extends Dialect {
     public static final String PRODUCT_NAME = "PostgreSQL";
 
     @Override
-    public String getName() {
+    public String getProductName() {
         return PRODUCT_NAME;
     }
 
