@@ -15,14 +15,17 @@ public final class SchemaChecksumDao {
         this.dao = dao;
     }
 
-    public void ensureCreate() {
-        String sql = "create table _schema_checksum_ ("
-                + "  name varchar(50) not null,"
-                + "  checksum char(32) not null,"
-                + "  timestamp datetime not null,"
-                + "  version varchar(20)"
-                + ")";
-        dao.executeUpdate(sql);
+    public void ensureCreate() throws SQLException {
+        if (!dao.getMetadata().tableExist("_schema_checksum_")) {
+            String sql = "create table _schema_checksum_ ("
+                    + "  name varchar(50) not null,"
+                    + "  checksum char(32) not null,"
+                    + "  timestamp datetime not null,"
+                    + "  version varchar(20),"
+                    + "  primary key (name)"
+                    + ")";
+            dao.executeUpdate(sql);
+        }
     }
 
     public List<SchemaChecksum> list() {

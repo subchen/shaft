@@ -42,7 +42,6 @@ public final class SchemaChecksum {
         this.version = version;
     }
 
-
     @Override
     public String toString() {
         return ToStringBuilder.reflection(this);

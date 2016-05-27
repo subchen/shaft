@@ -29,6 +29,7 @@
         <module>shaft-gen</module>
         <module>shaft-seq</module>
         <module>shaft-sync</module>
+        <module>shaft-test</module>
     </modules>
 
     <scm>

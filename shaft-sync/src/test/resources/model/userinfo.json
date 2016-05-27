@@ -8,7 +8,7 @@
         },
         {
             "name": "email",
-            "type": "varchar(50)"
+            "type": "varchar(50)",
             "annotations": [
                 "@Validate(EMAIL)"
             ]
@@ -19,7 +19,7 @@
         },
         {
             "name": "status",
-            "type": "enum",
+            "type": "varchar(20)",
             "enum": ["normal", "locked", "deleted"]
         },
         {

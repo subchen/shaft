@@ -1,6 +1,7 @@
 package shaft.sync.task.schema;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -49,7 +50,7 @@ public final class SchemaUpgradeTask extends UpgradeTask {
     @Override
     public void init(App app) {
         super.init(app);
-        dao = new SchemaChecksumDao(jdbc);
+        dao = new SchemaChecksumDao(app.getDbHelper());
     }
 
     @Override
@@ -74,7 +75,7 @@ public final class SchemaUpgradeTask extends UpgradeTask {
 
     private void readSchemaInfo() {
         log.debug("Reading schema from files ...");
-        List<DbTable> fileSchemaList = getSchemaInfoList();
+        List<DbTable> fileSchemaList = JSONScheme.getSchemaInfoList();
         for (DbTable schema : fileSchemaList) {
             fileSchemaMap.put(schema.getName().toUpperCase(), schema);
         }
@@ -115,7 +116,7 @@ public final class SchemaUpgradeTask extends UpgradeTask {
                 checksum.setVersion(version);
                 dao.save(checksum);
 
-            } else if (StringUtils.equals(checksum.getChecksum(), ChecksumUtils.compute(table))) {
+            } else if (StringUtils.equals(checksum.getChecksum(), checksum.compute(table))) {
                 // updated
                 if (dbTableNameSet.contains(tableName)) {
                     log.info("Table {} updating ...", table.getName());
@@ -125,7 +126,7 @@ public final class SchemaUpgradeTask extends UpgradeTask {
                     tableCreate(table);
                 }
 
-                checksum.setChecksum(ChecksumUtils.compute(table));
+                checksum.setChecksum(checksum.compute(table));
                 checksum.setTimestamp(new Timestamp(new Date().getTime()));
                 checksum.setVersion(version);
                 dao.update(checksum);
