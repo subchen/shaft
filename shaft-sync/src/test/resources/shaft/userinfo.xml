@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<table name="user_info" class="shaft.sample.model.UserInfo">
+<table name="user_info" class="shaft.sample.shaft.UserInfo">
 
     <column name="id" type="uuid" />
 

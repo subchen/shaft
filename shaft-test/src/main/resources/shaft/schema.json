@@ -1,0 +1,6 @@
+{
+    "package": "shaft.sample.model",
+    "tables": [
+        "userinfo.json"
+    ]
+}

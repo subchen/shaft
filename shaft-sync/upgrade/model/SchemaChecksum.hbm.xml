@@ -8,7 +8,7 @@
  * Please DO NOT modify this file.
  -->
 <hibernate-mapping>
-    <class name="jetbrick.dao.schema.upgrade.model.SchemaChecksum" table="_schema_checksum">
+    <class name="jetbrick.dao.schema.upgrade.shaft.SchemaChecksum" table="_schema_checksum">
 
         <id name="id" type="java.lang.Integer">
             <column name="id"/>
