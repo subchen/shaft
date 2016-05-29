@@ -1,4 +1,4 @@
-package test;
+package shaft.sync.schema;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package test;
+package shaft.sync.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

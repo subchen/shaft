@@ -1,4 +1,4 @@
-package test;
+package shaft.sync.schema;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,4 @@ public final class SchemaUtils {
         return mapper.readValue(is, Table.class);
     }
 
-    public static void main(String args[]) throws IOException {
-        System.out.println(getSchemaInfoList());
-    }
 }

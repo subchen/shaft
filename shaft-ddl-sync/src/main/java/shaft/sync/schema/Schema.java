@@ -1,4 +1,4 @@
-package test;
+package shaft.sync.schema;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import jetbrick.util.builder.ToStringBuilder;
 public class Schema {
     @JsonProperty("package")
     private String packageName;
+
     private List<String> tables;
 
     public String getPackageName() {
